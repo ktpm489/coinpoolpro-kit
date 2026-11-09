@@ -4,47 +4,49 @@ Test tự động từ file swagger của API. Chỉ cần Python 3.9+.
 
 ## Cài và chạy
 
-**macOS / Linux** (máy chỉ có `python3` và `pip3`, không có lệnh `pip` / `python`; nên dùng môi trường ảo):
+**macOS / Linux**: chạy một lệnh duy nhất, không cần tự cài hay activate gì:
 
+```sh
+cd coinpoolpro-kit
+./run.sh
 ```
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-Sau khi `activate`, `pip` và `python` dùng được bình thường. Mỗi lần mở terminal mới cần chạy lại `source .venv/bin/activate`. Nếu không dùng venv: `python3 -m pip install -r requirements.txt`, và chạy `python3 run.py ...` thay cho `python run.py ...`.
 
-**Lần sau (đã cài xong)**: không cần cài lại, chỉ cần:
+`./run.sh` lần đầu tự tạo `.venv` và cài thư viện, các lần sau chạy luôn. Không có tham số thì chạy `check`. Có tham số thì dùng như `python run.py`, ví dụ `./run.sh test -k admin`, `./run.sh find-public`.
 
-```
-cd /Users/bacoor/Documents/coinpoolpro-kit
-source .venv/bin/activate
+Nếu gõ `python run.py ...` mà báo `command not found: python`: máy chỉ có `python3`, và bạn chưa bật venv. Dùng `./run.sh ...`, hoặc bật venv thủ công:
+
+```sh
+source .venv/bin/activate    # đầu dòng lệnh có (.venv) là đã bật
 python run.py check
 ```
-Đầu dòng lệnh có `(.venv)` là đã bật venv. Không muốn activate thì chạy `.venv/bin/python run.py check`. Chỉ cài lại khi `requirements.txt` đổi. Thoát venv: `deactivate`. Cài hỏng thì `rm -rf .venv` rồi tạo lại.
 
-**Windows**:
+Thoát venv: `deactivate`. Cài hỏng thì `rm -rf .venv` rồi chạy lại `./run.sh`. Không muốn dùng venv: `python3 -m pip install -r requirements.txt` rồi `python3 run.py ...`.
+
+**Windows** (không có `run.sh`):
 
 ```
 py -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
+py run.py check
 ```
-(Nếu `python` không chạy thì dùng `py run.py ...`.)
 
-Copy `.env.example` thành `.env`, bỏ dấu `#` ở **một** dòng đăng nhập (`AUTH_HEADER`, hoặc `ADMIN_USERNAME` + `ADMIN_PASSWORD`, hoặc `TEST_PRIVATE_KEY`). Rồi:
-
-```
-python run.py check
-```
-Lệnh này tải swagger mới, chạy test, in bảng ĐẠT/LỖI. Báo cáo chi tiết: `output/report.html`.
+Copy `.env.example` thành `.env`, bỏ dấu `#` ở **một** dòng đăng nhập (`AUTH_HEADER`, hoặc `ADMIN_USERNAME` + `ADMIN_PASSWORD`, hoặc `TEST_PRIVATE_KEY`). Rồi chạy `./run.sh` (macOS/Linux) hoặc `py run.py check` (Windows). Lệnh này tải swagger mới, chạy test, in bảng ĐẠT/LỖI. Báo cáo chi tiết: `output/report.html`.
 
 Kết quả in ra theo từng nhóm (✓ đạt, ✗ có lỗi, - bị bỏ qua), kèm danh sách endpoint lỗi gộp theo mã trả về và gợi ý cách xử lý. Muốn xem output gốc của pytest: `python run.py test --raw`.
+
+Các file kết quả trong `output/`:
+
+| File | Dùng để |
+|---|---|
+| `ket_qua.csv` | Bảng từng endpoint, mở bằng Excel. Cột: Nhóm test, Endpoint, Kết quả (LỖI/BỎ QUA/ĐẠT), Mong đợi, Mã thực tế, Ghi chú. Dòng LỖI nằm trên cùng, lọc cột "Kết quả" hoặc "Mã thực tế" để chia việc hoặc gửi dev |
+| `report.html` | Báo cáo kỹ thuật đầy đủ, dùng khi cần gỡ lỗi |
 
 ## Các lệnh
 
 | Lệnh | Việc |
 |---|---|
-| `python run.py check` | tải spec + chạy test (thêm `--scan` để quét lỗi 5xx) |
+| `./run.sh` hoặc `python run.py check` | tải spec + chạy test (thêm `--scan` để quét lỗi 5xx) |
 | `python run.py test -k admin` | chỉ chạy test, tham số thêm chuyển cho pytest |
 | `python run.py cases` | sinh 636 test case ra `output/test_cases.csv` (mở bằng Excel) |
 | `python run.py find-public` | liệt kê GET thực tế công khai dù spec khai báo cần token |
@@ -96,6 +98,7 @@ Chưa chạy trên API Coinpool thật. Có thể phải chỉnh sau lần chạ
 ## Cấu trúc
 
 ```
+run.sh                 chạy nhanh trên macOS/Linux (tự lo venv)
 run.py                 file điều khiển (mọi lệnh ở trên)
 config.json            cấu hình riêng của API này
 swagger.json           spec đã tải (nên commit để thấy API đổi gì)

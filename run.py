@@ -152,6 +152,18 @@ GROUPS = {
 }
 
 
+EXPECT = {
+    "test_get_never_5xx": "Không lỗi server (dưới 500)",
+    "test_unknown_route_not_5xx": "Trả 404, không lỗi server",
+    "test_protected_rejects_missing_token": "Bị từ chối: 401 hoặc 403",
+    "test_protected_rejects_bad_token": "Bị từ chối: 401 hoặc 403",
+    "test_malformed_json_not_5xx": "Báo lỗi 4xx, không lỗi server",
+    "test_invalid_enum_rejected": "Báo lỗi 4xx (giá trị không hợp lệ)",
+    "test_user_token_forbidden_on_admin": "Bị từ chối: 401 hoặc 403",
+    "test_spec_has_paths": "swagger.json có dữ liệu",
+}
+
+
 def _group_of(name):
     base = name.split("[")[0]
     return GROUPS.get(base, (base, "Gửi nguyên thông báo cho người hỗ trợ."))
@@ -162,20 +174,35 @@ def summarize_junit(xml_path):
     import xml.etree.ElementTree as ET
     from collections import OrderedDict
     rows = OrderedDict()
+    detail = []
     for tc in ET.parse(xml_path).getroot().iter("testcase"):
         name = tc.get("name", "")
         title, hint = _group_of(name)
         g = rows.setdefault(title, {"hint": hint, "ok": 0, "skip": 0, "fail": []})
+        where = name[name.find("[") + 1:-1] if "[" in name else "-"
         bad = tc.find("failure") if tc.find("failure") is not None else tc.find("error")
         if bad is not None:
             msg = " ".join((bad.get("message") or "").split())
             msg = msg.replace("AssertionError: ", "").split("assert ")[0].strip() or msg
             msg = re.split(r": [\{\[]|\. Nếu ", msg)[0].strip()[:120]
-            g["fail"].append((name[name.find("[") + 1:-1] if "[" in name else name, msg))
+            g["fail"].append((where, msg))
+            m = re.search(r"(?:nhận|->)\s*(\d{3})", msg)
+            detail.append((title, where, "LỖI", EXPECT.get(name.split("[")[0], ""), m.group(1) if m else "", msg))
         elif tc.find("skipped") is not None:
             g["skip"] += 1
+            sk = tc.find("skipped")
+            detail.append((title, where, "BỎ QUA", EXPECT.get(name.split("[")[0], ""), "", (sk.get("message") or "")[:120]))
         else:
             g["ok"] += 1
+            detail.append((title, where, "ĐẠT", EXPECT.get(name.split("[")[0], ""), "", ""))
+    import csv
+    order = {"LỖI": 0, "BỎ QUA": 1, "ĐẠT": 2}
+    detail.sort(key=lambda d: order[d[2]])
+    csv_path = OUT / "ket_qua.csv"
+    with open(csv_path, "w", newline="", encoding="utf-8-sig") as f:  # utf-8-sig để Excel đọc đúng tiếng Việt
+        w = csv.writer(f)
+        w.writerow(["Nhóm test", "Endpoint", "Kết quả", "Mong đợi", "Mã thực tế", "Ghi chú"])
+        w.writerows(detail)
     total_fail = sum(len(g["fail"]) for g in rows.values())
     print(f"\n{'KẾT QUẢ':<58}{'đạt':>6}{'lỗi':>6}{'bỏ qua':>8}")
     print("-" * 78)
@@ -202,6 +229,7 @@ def summarize_junit(xml_path):
                     print(f"       ... và {len(wheres) - 8} endpoint nữa (xem output/report.html)")
     else:
         print("\nTất cả test đạt.")
+    print(f"\nBảng từng endpoint (mở bằng Excel, lọc cột 'Kết quả'): {csv_path}")
     return total_fail
 
 
