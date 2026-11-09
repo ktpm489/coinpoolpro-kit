@@ -1,7 +1,22 @@
+# Bí mật
 .env
+
+# Môi trường ảo Python
+.venv/
+venv/
+
+# Cache Python / test
 __pycache__/
+*.pyc
 .pytest_cache/
 .hypothesis/
 .schemathesis/
+
+# Kết quả chạy test (giữ lại thư mục output)
 output/*
 !output/.gitkeep
+
+# Hệ điều hành / editor
+.DS_Store
+.idea/
+.vscode/

@@ -4,7 +4,7 @@ Một file điều khiển cho cả bộ test.   Dùng:  python run.py <lệnh>
 
   check          tải spec, chạy test, in bảng ĐẠT/LỖI  (thêm --scan để quét lỗi 5xx)
   spec           tải swagger.json mới nhất, báo nếu API đã đổi
-  test [...]     chỉ chạy pytest (tham số thêm chuyển cho pytest, vd:  python run.py test -k admin)
+  test [...]     chỉ chạy pytest (tham số thêm chuyển cho pytest, vd:  python run.py test -k admin; thêm --raw để xem output gốc)
   cases [--all]  sinh bảng test case CSV -> output/test_cases.csv
   find-public    liệt kê GET khai báo cần token nhưng thực tế công khai
   scan [...]     Schemathesis: quét lỗi 5xx
@@ -14,6 +14,7 @@ Cấu hình: file .env (xem .env.example) và config.json.
 import importlib.util
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -136,16 +137,95 @@ def cmd_spec(_args=()):
     return 0
 
 
+# Tên dễ hiểu + gợi ý xử lý cho từng nhóm test
+GROUPS = {
+    "test_spec_has_paths": ("Đọc được swagger", "File swagger.json trống hoặc hỏng: chạy 'python run.py spec'."),
+    "test_get_never_5xx": ("GET không được lỗi server (5xx)", "Server bị crash khi gọi endpoint này: báo dev kèm đường dẫn và mã lỗi."),
+    "test_unknown_route_not_5xx": ("Đường dẫn không tồn tại không được lỗi 5xx", "Server phải trả 404, không phải 5xx: báo dev."),
+    "test_protected_rejects_missing_token": ("Không có token thì phải bị từ chối (401/403)",
+        "Nhận 200: endpoint thiếu kiểm tra đăng nhập (lỗ hổng) hoặc thực ra công khai: chạy 'python run.py find-public'. "
+        "Nhận 400/404: thêm giá trị đúng vào tests.samples trong config.json."),
+    "test_protected_rejects_bad_token": ("Token sai thì phải bị từ chối (401/403)", "Token sai mà vẫn qua hoặc lỗi khác: hỏi dev."),
+    "test_malformed_json_not_5xx": ("Gửi JSON hỏng không được lỗi 5xx", "Server crash khi nhận dữ liệu sai: báo dev."),
+    "test_invalid_enum_rejected": ("Giá trị ngoài danh sách phải bị 4xx", "API nhận giá trị sai mà không báo lỗi: báo dev."),
+    "test_user_token_forbidden_on_admin": ("User thường không vào được /admin", "User thường vào được trang admin (lỗ hổng phân quyền): báo dev gấp."),
+}
+
+
+def _group_of(name):
+    base = name.split("[")[0]
+    return GROUPS.get(base, (base, "Gửi nguyên thông báo cho người hỗ trợ."))
+
+
+def summarize_junit(xml_path):
+    """Đọc kết quả pytest, in bảng theo nhóm và danh sách lỗi dễ đọc."""
+    import xml.etree.ElementTree as ET
+    from collections import OrderedDict
+    rows = OrderedDict()
+    for tc in ET.parse(xml_path).getroot().iter("testcase"):
+        name = tc.get("name", "")
+        title, hint = _group_of(name)
+        g = rows.setdefault(title, {"hint": hint, "ok": 0, "skip": 0, "fail": []})
+        bad = tc.find("failure") if tc.find("failure") is not None else tc.find("error")
+        if bad is not None:
+            msg = " ".join((bad.get("message") or "").split())
+            msg = msg.replace("AssertionError: ", "").split("assert ")[0].strip() or msg
+            msg = re.split(r": [\{\[]|\. Nếu ", msg)[0].strip()[:120]
+            g["fail"].append((name[name.find("[") + 1:-1] if "[" in name else name, msg))
+        elif tc.find("skipped") is not None:
+            g["skip"] += 1
+        else:
+            g["ok"] += 1
+    total_fail = sum(len(g["fail"]) for g in rows.values())
+    print(f"\n{'KẾT QUẢ':<58}{'đạt':>6}{'lỗi':>6}{'bỏ qua':>8}")
+    print("-" * 78)
+    for title, g in rows.items():
+        mark = "✗" if g["fail"] else ("-" if not g["ok"] else "✓")
+        print(f"{mark} {title:<56}{g['ok']:>6}{len(g['fail']):>6}{g['skip']:>8}")
+    skipped = sum(g["skip"] for g in rows.values())
+    if skipped:
+        print(f"\n(Bỏ qua {skipped} test vì thiếu thông tin đăng nhập hoặc không áp dụng. Xem .env.example.)")
+    if total_fail:
+        print(f"\n=== {total_fail} LỖI CẦN XỬ LÝ ===")
+        for title, g in rows.items():
+            if not g["fail"]:
+                continue
+            print(f"\n▶ {title}  ({len(g['fail'])} lỗi)\n  Cách xử lý: {g['hint']}")
+            by_msg = OrderedDict()
+            for where, msg in g["fail"]:
+                by_msg.setdefault(msg, []).append(where)
+            for msg, wheres in by_msg.items():
+                print(f"   • {msg}  ({len(wheres)} endpoint)")
+                for w in wheres[:8]:
+                    print(f"       - {w}")
+                if len(wheres) > 8:
+                    print(f"       ... và {len(wheres) - 8} endpoint nữa (xem output/report.html)")
+    else:
+        print("\nTất cả test đạt.")
+    return total_fail
+
+
 def cmd_test(args=()):
     prepare()
     if not SPEC.exists():
         print("Chưa có swagger.json. Chạy trước: python run.py spec")
         return 2
-    cmd = [sys.executable, "-m", "pytest", "tests", "-ra"]
+    args = list(args)
+    raw = "--raw" in args
+    if raw:
+        args.remove("--raw")
+    OUT.mkdir(exist_ok=True)
+    xml = OUT / "results.xml"
+    cmd = [sys.executable, "-m", "pytest", "tests", f"--junitxml={xml}"]
+    cmd += ["-ra"] if raw else ["-q", "--tb=no"]
     if importlib.util.find_spec("pytest_html"):
-        OUT.mkdir(exist_ok=True)
         cmd += [f"--html={OUT / 'report.html'}", "--self-contained-html"]
-    return subprocess.call(cmd + list(args), cwd=ROOT)
+    if not raw:
+        print("Đang chạy test, vui lòng đợi (có thể mất vài phút)...")
+    code = subprocess.call(cmd + args, cwd=ROOT, stdout=None if raw else subprocess.DEVNULL)
+    if not raw and xml.exists():
+        summarize_junit(xml)
+    return code
 
 
 def cmd_cases(args=()):

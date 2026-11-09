@@ -38,6 +38,8 @@ python run.py check
 ```
 Lệnh này tải swagger mới, chạy test, in bảng ĐẠT/LỖI. Báo cáo chi tiết: `output/report.html`.
 
+Kết quả in ra theo từng nhóm (✓ đạt, ✗ có lỗi, - bị bỏ qua), kèm danh sách endpoint lỗi gộp theo mã trả về và gợi ý cách xử lý. Muốn xem output gốc của pytest: `python run.py test --raw`.
+
 ## Các lệnh
 
 | Lệnh | Việc |
