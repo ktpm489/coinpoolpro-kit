@@ -7,6 +7,7 @@ Một file điều khiển cho cả bộ test.   Dùng:  python run.py <lệnh>
   test [...]     chỉ chạy pytest (tham số thêm chuyển cho pytest, vd:  python run.py test -k admin; thêm --raw để xem output gốc)
   cases [--all]  sinh bảng test case CSV -> output/test_cases.csv
   find-public    liệt kê GET khai báo cần token nhưng thực tế công khai
+  postman        sinh output/postman_collection.json để import vào Postman
   scan [...]     Schemathesis: quét lỗi 5xx
 
 Cấu hình: file .env (xem .env.example) và config.json.
@@ -169,6 +170,104 @@ def _group_of(name):
     return GROUPS.get(base, (base, "Gửi nguyên thông báo cho người hỗ trợ."))
 
 
+def postman_text(method, url, query, headers, body):
+    """Mô tả từng ô cần nhập trong Postman. Token dùng biến {{token}} (Environment/Collection variable)."""
+    lines = [f"Method: {method}", f"URL: {url}"]
+    if query:
+        lines.append("Params (tab Params):")
+        lines += [f"  {k} = {v}" for k, v in query]
+    if headers:
+        lines.append("Headers (tab Headers):")
+        lines += [f"  {k}: {v}" for k, v in headers]
+    if body:
+        lines.append("Body (tab Body > raw > JSON):")
+        lines.append("  " + body)
+    return "\n".join(lines)
+
+
+_DOC = {}
+
+
+def endpoint_doc(where):
+    """Từ 'GET /path ?x' trả (tham số theo spec, curl hợp lệ) lấy từ swagger.json. ('','') nếu không tra được."""
+    m = re.match(r"^(GET|POST|PUT|PATCH|DELETE)\s+(/\S*)", where)
+    if not m or not SPEC.exists():
+        return "", "", ""
+    if not _DOC:
+        spec_ = importlib.util.spec_from_file_location("gen_cases", ROOT / "tools" / "gen_cases.py")
+        gen = importlib.util.module_from_spec(spec_)
+        spec_.loader.exec_module(gen)
+        _DOC.update(gen=gen, spec=gen.load(str(SPEC)), cfg=gen.load_config(str(CONFIG) if CONFIG.exists() else None))
+    gen, spec, cfg = _DOC["gen"], _DOC["spec"], _DOC["cfg"]
+    method, path = m.group(1).lower(), m.group(2)
+    item = gen.resolve(spec, spec.get("paths", {}).get(path, {}))
+    op = item.get(method)
+    if not isinstance(op, dict):
+        return "", "", ""
+    params = gen.op_params(spec, op, item.get("parameters", []))
+    lines, url, query = [], path, []
+    pm_query, pm_headers, pm_body = [], [], ""
+    for p in params:
+        if p.get("in") == "body":
+            continue
+        ps = gen.param_schema(spec, p)
+        extra = f"; chọn một trong: {' | '.join(map(str, ps['enum']))}" if ps.get("enum") else ""
+        lines.append(f"{p['name']} ({p.get('in')}, {ps.get('type', 'string')}, "
+                     f"{'bắt buộc' if p.get('required') else 'tùy chọn'}{extra})")
+        val = gen.sample(spec, ps, cfg, p["name"])
+        if p.get("in") == "path":
+            url = url.replace("{%s}" % p["name"], str(val))
+        elif p.get("in") == "query" and p.get("required"):
+            query.append(f"{p['name']}={val}")
+            pm_query.append((p["name"], val))
+    schema, body_required, ctype = gen.get_body(spec, op, params)
+    cmd = [f"curl -X {method.upper()} '{BASE()}{url}{'?' + '&'.join(query) if query else ''}'"]
+    if gen.op_security(spec, op):
+        cmd.append('-H "Authorization: $TOKEN"')
+        pm_headers.append(("Authorization", "{{token}}"))
+    if schema:
+        resolved = gen.resolve(spec, schema)
+        req = set(gen.required_of(resolved))
+        for k, v in resolved.get("properties", {}).items():
+            rv = gen.resolve(spec, v)
+            lines.append(f"body.{k} ({rv.get('type', 'string')}, {'bắt buộc' if k in req else 'tùy chọn'}"
+                         + (f"; chọn một trong: {' | '.join(map(str, rv['enum']))}" if rv.get("enum") else "") + ")")
+        if not lines or not any(x.startswith("body.") for x in lines):
+            lines.append("body (JSON, " + ("bắt buộc" if body_required else "tùy chọn") + ")")
+        cmd.append(f"-H 'Content-Type: {ctype or 'application/json'}'")
+        pm_headers.append(("Content-Type", ctype or "application/json"))
+        pm_body = json.dumps(gen.sample(spec, schema, cfg, None, full=True), ensure_ascii=False, indent=2).replace("\n", "\n  ")
+        cmd.append("-d '" + json.dumps(gen.sample(spec, schema, cfg, None, full=True), ensure_ascii=False) + "'")
+    note = "# CẢNH BÁO: lệnh ghi dữ liệu thật, chỉ chạy trên môi trường test\n" if method != "get" else ""
+    pm = postman_text(method.upper(), f"{BASE()}{url}", pm_query, pm_headers, pm_body)
+    return "\n".join(lines) or "không có tham số", note + " \\\n  ".join(cmd), pm
+
+
+def describe_request(raw):
+    """Từ JSON request đã ghi, tạo 'cách gọi' (lệnh curl) và 'tham số' dễ đọc."""
+    from urllib.parse import parse_qsl, urlsplit
+    calls = json.loads(raw)
+    curls, params, pms = [], [], []
+    for c in calls:
+        lines = [f"curl -X {c['method']} '{c['url']}'"]
+        lines += [f'-H "{k}: $TOKEN"' if v == "<token>" else f"-H '{k}: {v}'"
+                  for k, v in c.get("headers", {}).items()]
+        if c.get("body"):
+            lines.append(f"-d '{c['body']}'")
+        curls.append(" \\\n  ".join(lines))
+        u = urlsplit(c["url"])
+        pms.append(postman_text(c["method"], f"{u.scheme}://{u.netloc}{u.path}", parse_qsl(u.query),
+                                [(k, "{{token}}" if v == "<token>" else v) for k, v in c.get("headers", {}).items()],
+                                c.get("body", "")))
+        parts = [f"{k}={v}" for k, v in parse_qsl(urlsplit(c["url"]).query)]
+        if c.get("body"):
+            parts.append(f"body: {c['body']}")
+        auth = c.get("headers", {}).get("Authorization")
+        parts.append("token: " + ("$TOKEN (token đăng nhập)" if auth == "<token>" else auth or "không gửi"))
+        params.append("; ".join(parts))
+    return "\n".join(curls), "\n".join(params), "\n\n".join(pms)
+
+
 def summarize_junit(xml_path):
     """Đọc kết quả pytest, in bảng theo nhóm và danh sách lỗi dễ đọc."""
     import xml.etree.ElementTree as ET
@@ -180,6 +279,9 @@ def summarize_junit(xml_path):
         title, hint = _group_of(name)
         g = rows.setdefault(title, {"hint": hint, "ok": 0, "skip": 0, "fail": []})
         where = name[name.find("[") + 1:-1] if "[" in name else "-"
+        raw = next((p.get("value") for p in tc.iter("property") if p.get("name") == "request"), None)
+        how, par, pm_sent = describe_request(raw) if raw else ("", "", "")
+        spec_params, valid_curl, pm_valid = endpoint_doc(where)
         bad = tc.find("failure") if tc.find("failure") is not None else tc.find("error")
         if bad is not None:
             msg = " ".join((bad.get("message") or "").split())
@@ -187,21 +289,21 @@ def summarize_junit(xml_path):
             msg = re.split(r": [\{\[]|\. Nếu ", msg)[0].strip()[:120]
             g["fail"].append((where, msg))
             m = re.search(r"(?:nhận|->)\s*(\d{3})", msg)
-            detail.append((title, where, "LỖI", EXPECT.get(name.split("[")[0], ""), m.group(1) if m else "", msg))
+            detail.append((title, where, "LỖI", EXPECT.get(name.split("[")[0], ""), m.group(1) if m else "", msg, how, par, spec_params, valid_curl, pm_sent, pm_valid))
         elif tc.find("skipped") is not None:
             g["skip"] += 1
             sk = tc.find("skipped")
-            detail.append((title, where, "BỎ QUA", EXPECT.get(name.split("[")[0], ""), "", (sk.get("message") or "")[:120]))
+            detail.append((title, where, "BỎ QUA", EXPECT.get(name.split("[")[0], ""), "", (sk.get("message") or "")[:120], "", "", spec_params, valid_curl, "", pm_valid))
         else:
             g["ok"] += 1
-            detail.append((title, where, "ĐẠT", EXPECT.get(name.split("[")[0], ""), "", ""))
+            detail.append((title, where, "ĐẠT", EXPECT.get(name.split("[")[0], ""), "", "", how, par, spec_params, valid_curl, pm_sent, pm_valid))
     import csv
     order = {"LỖI": 0, "BỎ QUA": 1, "ĐẠT": 2}
     detail.sort(key=lambda d: order[d[2]])
     csv_path = OUT / "ket_qua.csv"
     with open(csv_path, "w", newline="", encoding="utf-8-sig") as f:  # utf-8-sig để Excel đọc đúng tiếng Việt
         w = csv.writer(f)
-        w.writerow(["Nhóm test", "Endpoint", "Kết quả", "Mong đợi", "Mã thực tế", "Ghi chú"])
+        w.writerow(["Nhóm test", "Endpoint", "Kết quả", "Mong đợi", "Mã thực tế", "Ghi chú", "Cách gọi test đã gửi (curl)", "Tham số đã gửi", "Tham số theo spec", "Cách gọi hợp lệ (curl)", "Postman: request test đã gửi", "Postman: cách gọi hợp lệ"])
         w.writerows(detail)
     total_fail = sum(len(g["fail"]) for g in rows.values())
     print(f"\n{'KẾT QUẢ':<58}{'đạt':>6}{'lỗi':>6}{'bỏ qua':>8}")
@@ -253,6 +355,7 @@ def cmd_test(args=()):
     code = subprocess.call(cmd + args, cwd=ROOT, stdout=None if raw else subprocess.DEVNULL)
     if not raw and xml.exists():
         summarize_junit(xml)
+        cmd_postman()
     return code
 
 
@@ -302,6 +405,72 @@ def cmd_find_public(_args=()):
     return 0
 
 
+def cmd_postman(_args=()):
+    """Sinh output/postman_collection.json từ swagger.json: import vào Postman là gọi được ngay."""
+    load_env()
+    if not SPEC.exists():
+        print("Chưa có swagger.json. Chạy trước: python run.py spec")
+        return 2
+    spec_ = importlib.util.spec_from_file_location("gen_cases", ROOT / "tools" / "gen_cases.py")
+    gen = importlib.util.module_from_spec(spec_)
+    spec_.loader.exec_module(gen)
+    spec = gen.load(str(SPEC))
+    cfg = gen.load_config(str(CONFIG) if CONFIG.exists() else None)
+    folders, count = {}, 0
+    for path, method, op, common in gen.iter_ops(spec, ("get", "post", "put", "patch", "delete")):
+        params = gen.op_params(spec, op, common)
+        segs = [x for x in path.strip("/").split("/") if x]
+        pm_segs = [":" + x[1:-1] if x.startswith("{") and x.endswith("}") else x for x in segs]
+        variables, query = [], []
+        for p in params:
+            if p.get("in") == "body":
+                continue
+            ps = gen.param_schema(spec, p)
+            val = gen.sample(spec, ps, cfg, p["name"])
+            desc = f"{ps.get('type', 'string')}, {'bắt buộc' if p.get('required') else 'tùy chọn'}" + (
+                f"; chọn một trong: {' | '.join(map(str, ps['enum']))}" if ps.get("enum") else "")
+            if p.get("in") == "path":
+                variables.append({"key": p["name"], "value": str(val), "description": desc})
+            elif p.get("in") == "query":
+                query.append({"key": p["name"], "value": str(val), "description": desc,
+                              "disabled": not p.get("required")})
+        headers = []
+        if gen.op_security(spec, op):
+            headers.append({"key": "Authorization", "value": "{{token}}"})
+        body = None
+        schema, _req, ctype = gen.get_body(spec, op, params)
+        if schema:
+            headers.append({"key": "Content-Type", "value": ctype or "application/json"})
+            body = {"mode": "raw", "options": {"raw": {"language": "json"}},
+                    "raw": json.dumps(gen.sample(spec, schema, cfg, None, full=True), ensure_ascii=False, indent=2)}
+        url = {"raw": "{{baseUrl}}/" + "/".join(pm_segs) + (
+            "?" + "&".join(f"{q['key']}={q['value']}" for q in query if not q["disabled"]) if any(
+                not q["disabled"] for q in query) else ""),
+            "host": ["{{baseUrl}}"], "path": pm_segs, "query": query, "variable": variables}
+        request = {"method": method.upper(), "header": headers, "url": url,
+                   "description": ("CẢNH BÁO: ghi dữ liệu thật, chỉ chạy trên môi trường test. " if method != "get" else "")
+                   + (op.get("summary") or op.get("description") or "")}
+        if body:
+            request["body"] = body
+        item = {"name": f"{method.upper()} {path}", "request": request, "event": [{
+            "listen": "test", "script": {"type": "text/javascript", "exec": [
+                'pm.test("Không lỗi server (dưới 500)", function () { pm.expect(pm.response.code).to.be.below(500); });']}}]}
+        tag = (op.get("tags") or ["Khác"])[0]
+        folders.setdefault(tag, []).append(item)
+        count += 1
+    info = spec.get("info", {})
+    coll = {"info": {"name": f"{info.get('title') or 'Coinpool API'} (tự sinh từ swagger)",
+                     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"},
+            "variable": [{"key": "baseUrl", "value": BASE()},
+                         {"key": "token", "value": "", "description": "Dán 'Bearer xxx' (hoặc token) vào đây"}],
+            "item": [{"name": t, "item": its} for t, its in folders.items()]}
+    OUT.mkdir(exist_ok=True)
+    f = OUT / "postman_collection.json"
+    f.write_text(json.dumps(coll, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"Đã tạo {f} ({count} request, {len(folders)} thư mục). Postman: Import > chọn file > điền biến 'token'.")
+    return 0
+
+
 def cmd_scan(args=()):
     prepare()
     if not shutil.which("schemathesis"):
@@ -338,7 +507,7 @@ def cmd_check(args=()):
 
 
 COMMANDS = {"check": cmd_check, "spec": cmd_spec, "test": cmd_test, "cases": cmd_cases,
-            "find-public": cmd_find_public, "scan": cmd_scan}
+            "find-public": cmd_find_public, "scan": cmd_scan, "postman": cmd_postman}
 
 if __name__ == "__main__":
     if len(sys.argv) < 2 or sys.argv[1] not in COMMANDS:

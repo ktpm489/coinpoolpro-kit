@@ -39,8 +39,19 @@ Các file kết quả trong `output/`:
 
 | File | Dùng để |
 |---|---|
-| `ket_qua.csv` | Bảng từng endpoint, mở bằng Excel. Cột: Nhóm test, Endpoint, Kết quả (LỖI/BỎ QUA/ĐẠT), Mong đợi, Mã thực tế, Ghi chú. Dòng LỖI nằm trên cùng, lọc cột "Kết quả" hoặc "Mã thực tế" để chia việc hoặc gửi dev |
+| `ket_qua.csv` | Bảng từng endpoint, mở bằng Excel. Cột: Nhóm test, Endpoint, Kết quả (LỖI/BỎ QUA/ĐẠT), Mong đợi, Mã thực tế, Ghi chú, **Cách gọi test đã gửi (curl)** và **Tham số đã gửi** (đúng request mà test gửi, để tái hiện lỗi), **Tham số theo spec** (tên, nơi đặt query/path/body, kiểu, bắt buộc hay không, các giá trị enum) và **Cách gọi hợp lệ (curl)** (request đúng theo spec kèm body mẫu, để tester gọi thử bình thường; lệnh ghi dữ liệu có dòng cảnh báo). Dòng LỖI nằm trên cùng, lọc cột "Kết quả" hoặc "Mã thực tế" để chia việc hoặc gửi dev. Hai cột **Postman** ghi sẵn từng ô cần nhập (Method, URL, Params, Headers, Body raw JSON), một cột cho request test đã gửi, một cột cho cách gọi hợp lệ. Trong Postman, tạo biến `token` (Environment hoặc Collection variable) có giá trị `Bearer xxx`; ô Authorization ghi `{{token}}` sẽ tự lấy giá trị đó. Các lệnh curl dùng biến `$TOKEN`, đặt trước khi chạy: `export TOKEN='Bearer xxx'` (token thật không bao giờ được ghi vào file) |
+| `postman_collection.json` | Import thẳng vào Postman (xem mục dưới) |
 | `report.html` | Báo cáo kỹ thuật đầy đủ, dùng khi cần gỡ lỗi |
+
+## Gọi bằng Postman (import là chạy)
+
+`./run.sh` (hoặc `python run.py postman`) sinh `output/postman_collection.json` từ swagger: mọi endpoint, chia thư mục theo tag, đã có URL, tham số (tham số tùy chọn để tắt sẵn), body mẫu, header và một test kiểm tra không lỗi 5xx.
+
+1. Postman: **Import** > chọn `output/postman_collection.json`.
+2. Mở collection > tab **Variables**: điền `token` = `Bearer xxx` (không cần token thì để trống), kiểm tra `baseUrl`. Bấm Save.
+3. Chọn request > **Send**. Hoặc chuột phải collection > **Run collection** để chạy tất cả.
+
+Lưu ý: collection có cả POST/PUT/DELETE với dữ liệu mẫu, các request ghi dữ liệu ghi chú "CẢNH BÁO" trong phần Description. Chỉ chạy trên môi trường test, và đừng bấm Run collection khi chưa loại các request nguy hiểm (ví dụ `/notification`, `/pair/mint-position`, `/multisig-contract/create`, `/upload/file`).
 
 ## Các lệnh
 
@@ -50,6 +61,7 @@ Các file kết quả trong `output/`:
 | `python run.py test -k admin` | chỉ chạy test, tham số thêm chuyển cho pytest |
 | `python run.py cases` | sinh 636 test case ra `output/test_cases.csv` (mở bằng Excel) |
 | `python run.py find-public` | liệt kê GET thực tế công khai dù spec khai báo cần token |
+| `python run.py postman` | sinh collection Postman ra `output/postman_collection.json` |
 | `python run.py spec` | chỉ tải swagger, báo nếu API đã đổi |
 | `python run.py scan` | chỉ quét lỗi 5xx bằng Schemathesis |
 
