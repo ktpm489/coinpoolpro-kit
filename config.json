@@ -1,0 +1,478 @@
+{
+  "risky": [
+    {
+      "method": "POST",
+      "path": "/blacklist-token",
+      "risk": "DESTRUCTIVE",
+      "note": "Thêm token vào blacklist: ảnh hưởng hiển thị cho người dùng. Dùng token test, xoá lại bằng DELETE /blacklist-token/{id}."
+    },
+    {
+      "method": "DELETE",
+      "path": "/blacklist-token/{id}",
+      "risk": "DESTRUCTIVE",
+      "note": "Xoá mục blacklist thật. Chỉ xoá mục do chính bạn tạo khi test."
+    },
+    {
+      "method": "POST",
+      "path": "/featured-earning-user",
+      "risk": "DESTRUCTIVE",
+      "note": "Thêm user nổi bật (hiển thị công khai). Dùng ví test."
+    },
+    {
+      "method": "PUT",
+      "path": "/featured-earning-user/{address}",
+      "risk": "DESTRUCTIVE",
+      "note": "Sửa user nổi bật. Dùng ví test."
+    },
+    {
+      "method": "POST",
+      "path": "/notification",
+      "risk": "DESTRUCTIVE",
+      "note": "Tạo thông báo: hỏi dev có gửi tới người dùng thật không trước khi chạy."
+    },
+    {
+      "method": "PUT",
+      "path": "/notification/{id}",
+      "risk": "DESTRUCTIVE",
+      "note": "Sửa thông báo thật."
+    },
+    {
+      "method": "DELETE",
+      "path": "/notification/{id}",
+      "risk": "DESTRUCTIVE",
+      "note": "Xoá thông báo thật."
+    },
+    {
+      "method": "POST",
+      "path": "/token",
+      "risk": "DESTRUCTIVE",
+      "note": "Tạo token trong danh mục chung. Dùng địa chỉ giả."
+    },
+    {
+      "method": "PUT",
+      "path": "/token/{chainId}/{address}",
+      "risk": "DESTRUCTIVE",
+      "note": "Sửa thông tin token trong danh mục chung (tên, icon, rwa, position)."
+    },
+    {
+      "method": "POST",
+      "path": "/token-summary",
+      "risk": "DESTRUCTIVE",
+      "note": "Tạo token summary."
+    },
+    {
+      "method": "PUT",
+      "path": "/token-summary/{chainId}/{address}",
+      "risk": "DESTRUCTIVE",
+      "note": "Sửa token summary."
+    },
+    {
+      "method": "POST",
+      "path": "/admin/user",
+      "risk": "DESTRUCTIVE",
+      "note": "Tạo tài khoản admin/user quản trị: thay đổi phân quyền."
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/user/{address}",
+      "risk": "DESTRUCTIVE",
+      "note": "Đổi tên/trạng thái (active/blocked) user: có thể khoá nhầm user thật. Dùng ví test."
+    },
+    {
+      "method": "PUT",
+      "path": "/app/bridge-provider",
+      "risk": "DESTRUCTIVE",
+      "note": "Đổi bridge provider theo chain: ảnh hưởng toàn hệ thống."
+    },
+    {
+      "method": "PUT",
+      "path": "/app/config",
+      "risk": "DESTRUCTIVE",
+      "note": "Đổi cấu hình hệ thống."
+    },
+    {
+      "method": "POST",
+      "path": "/pool/system",
+      "risk": "DESTRUCTIVE",
+      "note": "Tạo system pool."
+    },
+    {
+      "method": "PUT",
+      "path": "/pool/system/{chainId}/{poolId}",
+      "risk": "DESTRUCTIVE",
+      "note": "Sửa system pool."
+    },
+    {
+      "method": "POST",
+      "path": "/pair",
+      "risk": "DESTRUCTIVE",
+      "note": "Tạo pair (có tickLower/tickUpper, memo)."
+    },
+    {
+      "method": "POST",
+      "path": "/pair/mint-position",
+      "risk": "DESTRUCTIVE",
+      "note": "Mint position cho pair: hỏi dev có gửi giao dịch on-chain thật không."
+    },
+    {
+      "method": "DELETE",
+      "path": "/pair/{no}",
+      "risk": "DESTRUCTIVE",
+      "note": "Xoá pair theo số thứ tự (no)."
+    },
+    {
+      "method": "POST",
+      "path": "/multisig-contract/create",
+      "risk": "DESTRUCTIVE",
+      "note": "Tạo multisig contract: có thể tốn phí on-chain. Hỏi dev trước khi chạy ngoài case báo lỗi."
+    },
+    {
+      "method": "POST",
+      "path": "/multisig-contract/signature-request",
+      "risk": "DESTRUCTIVE",
+      "note": "Ghi yêu cầu chữ ký multisig."
+    },
+    {
+      "method": "POST",
+      "path": "/firebase-notification",
+      "risk": "LOW",
+      "note": "Đăng ký token push (ít rủi ro)."
+    },
+    {
+      "method": "DELETE",
+      "path": "/firebase-notification",
+      "risk": "LOW",
+      "note": "Huỷ đăng ký token push (ít rủi ro)."
+    },
+    {
+      "method": "POST",
+      "path": "/keyring/register-address",
+      "risk": "DESTRUCTIVE",
+      "note": "Đăng ký địa chỉ vào Keyring."
+    },
+    {
+      "method": "PUT",
+      "path": "/keyring/update-user-name/{address}",
+      "risk": "DESTRUCTIVE",
+      "note": "Đổi tên user Keyring."
+    },
+    {
+      "method": "DELETE",
+      "path": "/keyring/delete-user/{address}",
+      "risk": "DESTRUCTIVE",
+      "note": "Xoá user Keyring thật. Chỉ dùng ví test."
+    },
+    {
+      "method": "POST",
+      "path": "/upload/file",
+      "risk": "DESTRUCTIVE",
+      "note": "Upload file lên storage (multipart). Dùng file nhỏ, vô hại; hỏi dev file có tự công khai không."
+    },
+    {
+      "method": "POST",
+      "path": "/token/info",
+      "risky": false
+    },
+    {
+      "method": "POST",
+      "path": "/auth/sign",
+      "risky": false
+    },
+    {
+      "method": "POST",
+      "path": "/auth/admin/login",
+      "risky": false
+    }
+  ],
+  "extra": [
+    {
+      "method": "POST",
+      "path": "/multisig-contract/create",
+      "category": "edge",
+      "description": "signerThreshold lớn hơn số signers",
+      "body": {
+        "chainId": "1",
+        "signers": [
+          "0x0000000000000000000000000000000000000001",
+          "0x0000000000000000000000000000000000000002"
+        ],
+        "signerThreshold": 3,
+        "label": "qa"
+      },
+      "expected": "400",
+      "risk": "LOW"
+    },
+    {
+      "method": "POST",
+      "path": "/multisig-contract/create",
+      "category": "edge",
+      "description": "signerThreshold = 0",
+      "body": {
+        "chainId": "1",
+        "signers": [
+          "0x0000000000000000000000000000000000000001",
+          "0x0000000000000000000000000000000000000002"
+        ],
+        "signerThreshold": 0,
+        "label": "qa"
+      },
+      "expected": "400",
+      "risk": "LOW"
+    },
+    {
+      "method": "POST",
+      "path": "/multisig-contract/create",
+      "category": "edge",
+      "description": "signers rỗng",
+      "body": {
+        "chainId": "1",
+        "signers": [],
+        "signerThreshold": 1,
+        "label": "qa"
+      },
+      "expected": "400",
+      "risk": "LOW"
+    },
+    {
+      "method": "POST",
+      "path": "/multisig-contract/create",
+      "category": "edge",
+      "description": "signers trùng địa chỉ",
+      "body": {
+        "chainId": "1",
+        "signers": [
+          "0x0000000000000000000000000000000000000001",
+          "0x0000000000000000000000000000000000000001"
+        ],
+        "signerThreshold": 1,
+        "label": "qa"
+      },
+      "expected": "400 hoặc loại bỏ trùng",
+      "risk": "DESTRUCTIVE",
+      "note": "Nếu API nhận, sẽ tạo contract thật."
+    },
+    {
+      "method": "POST",
+      "path": "/multisig-contract/create",
+      "category": "edge",
+      "description": "chainId không thuộc danh sách hỗ trợ",
+      "body": {
+        "chainId": "999",
+        "signers": [
+          "0x0000000000000000000000000000000000000001",
+          "0x0000000000000000000000000000000000000002"
+        ],
+        "signerThreshold": 1,
+        "label": "qa"
+      },
+      "expected": "400",
+      "risk": "LOW"
+    },
+    {
+      "method": "POST",
+      "path": "/pair",
+      "category": "edge",
+      "description": "tickLower lớn hơn tickUpper",
+      "body": {
+        "zeroForOne": true,
+        "chainId": "1",
+        "poolId": "0xnotexist",
+        "tickLower": 100,
+        "tickUpper": -100,
+        "memo": "qa"
+      },
+      "expected": "400",
+      "risk": "LOW"
+    },
+    {
+      "method": "POST",
+      "path": "/pair",
+      "category": "edge",
+      "description": "poolId không tồn tại",
+      "body": {
+        "zeroForOne": true,
+        "chainId": "1",
+        "poolId": "0xnotexist",
+        "tickLower": -100,
+        "tickUpper": 100,
+        "memo": "qa"
+      },
+      "expected": "400 hoặc 404",
+      "risk": "LOW"
+    },
+    {
+      "method": "POST",
+      "path": "/pair",
+      "category": "edge",
+      "description": "memo rỗng",
+      "body": {
+        "zeroForOne": true,
+        "chainId": "1",
+        "poolId": "0xnotexist",
+        "tickLower": -100,
+        "tickUpper": 100,
+        "memo": ""
+      },
+      "expected": "400",
+      "risk": "LOW"
+    },
+    {
+      "method": "POST",
+      "path": "/pair/mint-position",
+      "category": "edge",
+      "description": "no không tồn tại",
+      "body": {
+        "no": 999999999,
+        "tokenId": "1"
+      },
+      "expected": "404 hoặc 400",
+      "risk": "LOW"
+    },
+    {
+      "method": "POST",
+      "path": "/pair/mint-position",
+      "category": "edge",
+      "description": "tokenId không phải số",
+      "body": {
+        "no": 1,
+        "tokenId": "abc"
+      },
+      "expected": "400",
+      "risk": "LOW"
+    },
+    {
+      "method": "POST",
+      "path": "/pair/mint-position",
+      "category": "edge",
+      "description": "no âm",
+      "body": {
+        "no": -1,
+        "tokenId": "1"
+      },
+      "expected": "400",
+      "risk": "LOW"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/user",
+      "category": "edge",
+      "description": "userAddress viết hoa (API chuyển về chữ thường)",
+      "body": {
+        "userAddress": "0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "username": "qa-case"
+      },
+      "expected": "2xx; địa chỉ lưu dạng chữ thường",
+      "risk": "DESTRUCTIVE",
+      "note": "Tạo user thật. Xoá lại sau khi test."
+    },
+    {
+      "method": "POST",
+      "path": "/admin/user",
+      "category": "edge",
+      "description": "tạo trùng userAddress lần 2",
+      "body": {
+        "userAddress": "0x0000000000000000000000000000000000000001",
+        "username": "qa-dup"
+      },
+      "expected": "409 hoặc 400",
+      "risk": "DESTRUCTIVE",
+      "note": "Chạy hai lần liên tiếp."
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/user/{address}",
+      "category": "edge",
+      "description": "status ngoài active/blocked",
+      "body": {
+        "status": "deleted"
+      },
+      "expected": "400",
+      "risk": "LOW"
+    },
+    {
+      "method": "POST",
+      "path": "/keyring/register-address",
+      "category": "edge",
+      "description": "userAddress thiếu 1 ký tự",
+      "body": {
+        "userAddress": "0x000000000000000000000000000000000000001"
+      },
+      "expected": "400",
+      "risk": "LOW"
+    },
+    {
+      "method": "POST",
+      "path": "/token/info",
+      "category": "edge",
+      "description": "addresses rỗng",
+      "body": {
+        "chainId": "1",
+        "addresses": []
+      },
+      "expected": "200 danh sách rỗng hoặc 400",
+      "risk": "LOW"
+    },
+    {
+      "method": "POST",
+      "path": "/token/info",
+      "category": "edge",
+      "description": "chainId không hỗ trợ",
+      "body": {
+        "chainId": "999",
+        "addresses": [
+          "0x0000000000000000000000000000000000000001"
+        ]
+      },
+      "expected": "400",
+      "risk": "LOW"
+    },
+    {
+      "method": "POST",
+      "path": "/firebase-notification",
+      "category": "edge",
+      "description": "thiếu language",
+      "body": {
+        "token": "qa-token"
+      },
+      "expected": "400",
+      "risk": "LOW"
+    },
+    {
+      "method": "POST",
+      "path": "/firebase-notification",
+      "category": "edge",
+      "description": "token rỗng",
+      "body": {
+        "token": "",
+        "language": "en"
+      },
+      "expected": "400",
+      "risk": "LOW"
+    }
+  ],
+  "field_samples": {
+    "chainId": "1",
+    "username": "qa-user",
+    "memo": "qa",
+    "label": "qa"
+  },
+  "id_params": [
+    "id",
+    "uuid",
+    "_id",
+    "no",
+    "poolId"
+  ],
+  "tests": {
+    "skip": [],
+    "auth_statuses": [
+      401,
+      403
+    ],
+    "public": [
+      "GET /auth/sign",
+      "POST /auth/sign",
+      "POST /auth/admin/login"
+    ]
+  }
+}

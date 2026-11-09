@@ -1,0 +1,4180 @@
+{
+  "basePath": "/",
+  "info": {
+    "title": "Coinpool V2 API Documentation",
+    "version": "0.0.1"
+  },
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "jwt": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "jwt": []
+    }
+  ],
+  "swagger": "2.0",
+  "host": "cpv2-api.bacoor-test001.xyz",
+  "tags": [],
+  "paths": {
+    "/blacklist-token": {
+      "get": {
+        "summary": "Get list blacklist tokens",
+        "operationId": "getBlacklisttoken",
+        "parameters": [
+          {
+            "type": "string",
+            "maxLength": 100,
+            "name": "key",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "chainId",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "tokenAddress",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "BlacklistToken"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create blacklist token",
+        "operationId": "postBlacklisttoken",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model1"
+            }
+          }
+        ],
+        "tags": [
+          "BlacklistToken"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/exchange-history": {
+      "get": {
+        "summary": "Get exchange history",
+        "operationId": "getExchangehistory",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "contractAddress",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Exchange"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/featured-earning-user": {
+      "get": {
+        "summary": "Get list featured earning user",
+        "operationId": "getFeaturedearninguser",
+        "tags": [
+          "Featured earning user"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      },
+      "post": {
+        "summary": "Api description",
+        "operationId": "postFeaturedearninguser",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model2"
+            }
+          }
+        ],
+        "tags": [
+          "Featured earning user"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/notification": {
+      "get": {
+        "summary": "Get all notifications",
+        "operationId": "getNotification",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 50,
+            "minimum": 1,
+            "maximum": 1000,
+            "name": "limit",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1,
+            "name": "page",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "Notification"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create notification",
+        "operationId": "postNotification",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model4"
+            }
+          }
+        ],
+        "tags": [
+          "Notification"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/pools-ranking": {
+      "get": {
+        "summary": "Get list pools ranking",
+        "operationId": "getPoolsranking",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 50,
+            "minimum": 1,
+            "maximum": 1000,
+            "name": "limit",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1,
+            "name": "page",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "maxLength": 100,
+            "name": "key",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "number",
+            "default": 1,
+            "minimum": 1,
+            "name": "startRanking",
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "default": 100,
+            "minimum": 1,
+            "name": "endRanking",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "all",
+            "enum": [
+              "all",
+              "10k_up",
+              "100k_up",
+              "1m_up",
+              "10m_up"
+            ],
+            "name": "tvl",
+            "in": "query"
+          }
+        ],
+        "tags": [
+          "Pool Ranking"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/token": {
+      "get": {
+        "summary": "Get token list",
+        "operationId": "getToken",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 50,
+            "minimum": 1,
+            "maximum": 1000,
+            "name": "limit",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1,
+            "name": "page",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "array",
+            "x-constraint": {
+              "single": true
+            },
+            "items": {
+              "type": "string",
+              "minLength": 40,
+              "maxLength": 42,
+              "pattern": "^0x[a-fA-F0-9]{40}$",
+              "x-format": {
+                "alphanum": true
+              }
+            },
+            "collectionFormat": "multi",
+            "name": "address",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "Token"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create token",
+        "operationId": "postToken",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model6"
+            }
+          }
+        ],
+        "tags": [
+          "Token"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/token-summary": {
+      "get": {
+        "summary": "Get a token summary",
+        "operationId": "getTokensummary",
+        "parameters": [
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "name": "address",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Token Summary"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a token summary",
+        "operationId": "postTokensummary",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model7"
+            }
+          }
+        ],
+        "tags": [
+          "Token Summary"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/admin/summary": {
+      "get": {
+        "summary": "Get dashboard summary",
+        "operationId": "getAdminSummary",
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/admin/user": {
+      "get": {
+        "summary": "Get list user",
+        "operationId": "getAdminUser",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 50,
+            "minimum": 1,
+            "maximum": 1000,
+            "name": "limit",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1,
+            "name": "page",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "array",
+            "x-constraint": {
+              "single": true
+            },
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "name": "createBy",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "array",
+            "x-constraint": {
+              "single": true
+            },
+            "items": {
+              "type": "string",
+              "enum": [
+                "active",
+                "blocked"
+              ]
+            },
+            "collectionFormat": "multi",
+            "name": "status",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "key",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create user",
+        "operationId": "postAdminUser",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model8"
+            }
+          }
+        ],
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/app/bridge-provider": {
+      "get": {
+        "summary": "Get bridge providers",
+        "operationId": "getAppBridgeprovider",
+        "tags": [
+          "App"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update bridge provider by chain",
+        "operationId": "putAppBridgeprovider",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model17"
+            }
+          }
+        ],
+        "tags": [
+          "App"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/app/template": {
+      "get": {
+        "summary": "Get app template",
+        "operationId": "getAppTemplate",
+        "tags": [
+          "App"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "summary": "Me",
+        "operationId": "getAuthMe",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/auth/sign": {
+      "get": {
+        "summary": "Get sign-in data",
+        "operationId": "getAuthSign",
+        "parameters": [
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "name": "address",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      },
+      "post": {
+        "summary": "Sign in",
+        "operationId": "postAuthSign",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model9"
+            }
+          }
+        ],
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/keyring/all-users": {
+      "get": {
+        "summary": "Api description",
+        "operationId": "getKeyringAllusers",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "sortBy",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "default": "desc",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "name": "sortOrder",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "keyring Admin"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/keyring/reward-by-signer": {
+      "get": {
+        "summary": "Api description",
+        "operationId": "getKeyringRewardbysigner",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 50,
+            "minimum": 1,
+            "maximum": 1000,
+            "name": "limit",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1,
+            "name": "page",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "x-convert": {
+              "case": "lower"
+            },
+            "name": "address",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "keyring Admin"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/keyring/total-reward-step-month": {
+      "get": {
+        "summary": "Api description",
+        "operationId": "getKeyringTotalrewardstepmonth",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "keyring Admin"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/keyring/user-details": {
+      "get": {
+        "summary": "Api description",
+        "operationId": "getKeyringUserdetails",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 50,
+            "minimum": 1,
+            "maximum": 1000,
+            "name": "limit",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1,
+            "name": "page",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "sortBy",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "default": "desc",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "name": "sortOrder",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "key",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "keyring Admin"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/keyring/users": {
+      "get": {
+        "summary": "Api description",
+        "operationId": "getKeyringUsers",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 50,
+            "minimum": 1,
+            "maximum": 1000,
+            "name": "limit",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1,
+            "name": "page",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "sortBy",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "default": "desc",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "name": "sortOrder",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "key",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "keyring Admin"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/market/chart": {
+      "get": {
+        "summary": "Api description",
+        "operationId": "getMarketChart",
+        "tags": [
+          "Market"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/multisig-contract/create-fee": {
+      "get": {
+        "summary": "Api description",
+        "operationId": "getMultisigcontractCreatefee",
+        "tags": [
+          "Multisig Contract"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/multisig-contract/signature-request": {
+      "get": {
+        "summary": "Get signature request from multisig contract",
+        "operationId": "getMultisigcontractSignaturerequest",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "contractAddress",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "enum": [
+              "withdraw-token",
+              "withdraw-nft"
+            ],
+            "name": "type",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "number",
+            "name": "nonce",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "Multisig Contract"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      },
+      "post": {
+        "summary": "Post signature request from multisig contract",
+        "operationId": "postMultisigcontractSignaturerequest",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model12"
+            }
+          }
+        ],
+        "tags": [
+          "Multisig Contract"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/notification/latest": {
+      "get": {
+        "summary": "Get latest notifications",
+        "operationId": "getNotificationLatest",
+        "tags": [
+          "Notification"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/pair/detail": {
+      "get": {
+        "summary": "Get pair detail",
+        "operationId": "getPairDetail",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 50,
+            "minimum": 1,
+            "maximum": 1000,
+            "name": "limit",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1,
+            "name": "page",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "sortBy",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "default": "desc",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "name": "sortOrder",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "token0",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "token1",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "enum": [
+              "rwa",
+              "stability"
+            ],
+            "name": "filter",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "createdBy",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "maxLength": 100,
+            "name": "key",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "array",
+            "x-constraint": {
+              "single": true
+            },
+            "items": {
+              "type": "string",
+              "enum": [
+                "v3",
+                "v4"
+              ]
+            },
+            "collectionFormat": "multi",
+            "name": "protocol",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "Pair"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/pair/list": {
+      "get": {
+        "summary": "Get list pair",
+        "operationId": "getPairList",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 50,
+            "minimum": 1,
+            "maximum": 1000,
+            "name": "limit",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1,
+            "name": "page",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "sortBy",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "default": "desc",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "name": "sortOrder",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "createdBy",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "boolean",
+            "name": "sortApr",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "enum": [
+              "rwa",
+              "stability"
+            ],
+            "name": "filter",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "maxLength": 100,
+            "name": "key",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "array",
+            "x-constraint": {
+              "single": true
+            },
+            "items": {
+              "type": "string",
+              "enum": [
+                "v3",
+                "v4"
+              ]
+            },
+            "collectionFormat": "multi",
+            "name": "protocol",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "Pair"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/pair/pool": {
+      "get": {
+        "summary": "Get pools",
+        "operationId": "getPairPool",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "tokenA",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "tokenB",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "number",
+            "name": "fee",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "Pair"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/pair/pool-slippage": {
+      "get": {
+        "summary": "Get pool slippage",
+        "operationId": "getPairPoolslippage",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "poolId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Pair"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/pool/system": {
+      "get": {
+        "summary": "Get system pools",
+        "operationId": "getPoolSystem",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 50,
+            "minimum": 1,
+            "maximum": 1000,
+            "name": "limit",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1,
+            "name": "page",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "poolId",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "name": "token0",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "name": "token1",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "name": "hooks",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "Pool"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create system pool",
+        "operationId": "postPoolSystem",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model14"
+            }
+          }
+        ],
+        "tags": [
+          "Pool"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/reposition/history": {
+      "get": {
+        "summary": "Get LPs reposition history",
+        "operationId": "getRepositionHistory",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "id",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Auto Collect Reposition"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/reposition/notification": {
+      "get": {
+        "summary": "Get LPs reposition notification",
+        "operationId": "getRepositionNotification",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "id",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Auto Collect Reposition"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/token/list": {
+      "get": {
+        "summary": "Get list tokens",
+        "operationId": "getTokenList",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "key",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "Token"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/token-summary/list": {
+      "get": {
+        "summary": "Get list token summary",
+        "operationId": "getTokensummaryList",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 50,
+            "minimum": 1,
+            "maximum": 1000,
+            "name": "limit",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1,
+            "name": "page",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "key",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "address",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "boolean",
+            "name": "isNew",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "Token Summary"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/uniswap/nft": {
+      "get": {
+        "summary": "Get nfts",
+        "operationId": "getUniswapNft",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "name": "owner",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "array",
+            "x-constraint": {
+              "single": true
+            },
+            "items": {
+              "type": "string",
+              "enum": [
+                "v3",
+                "v4"
+              ]
+            },
+            "collectionFormat": "multi",
+            "name": "protocol",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "integer",
+            "default": 0,
+            "minimum": 0,
+            "name": "skip",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "integer",
+            "default": 50,
+            "minimum": 1,
+            "maximum": 1000,
+            "name": "limit",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "Uniswap"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/uniswap/position-summary": {
+      "get": {
+        "summary": "Get position summary",
+        "operationId": "getUniswapPositionsummary",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "pattern": "^[0-9]+$",
+            "name": "tokenId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "default": "v4",
+            "enum": [
+              "v3",
+              "v4"
+            ],
+            "name": "protocol",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Uniswap"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/uniswap/positions": {
+      "get": {
+        "summary": "Get position detail",
+        "operationId": "getUniswapPositions",
+        "parameters": [
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "x-convert": {
+              "case": "lower"
+            },
+            "name": "owner",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Uniswap"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/uniswap/positions-snapshot": {
+      "get": {
+        "summary": "Get positions snapshot",
+        "operationId": "getUniswapPositionssnapshot",
+        "parameters": [
+          {
+            "type": "array",
+            "minItems": 1,
+            "x-constraint": {
+              "single": true
+            },
+            "items": {
+              "type": "string",
+              "minLength": 40,
+              "maxLength": 42,
+              "pattern": "^0x[a-fA-F0-9]{40}$",
+              "x-format": {
+                "alphanum": true
+              }
+            },
+            "collectionFormat": "multi",
+            "name": "addresses",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Uniswap"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/admin/positions/profit-chart": {
+      "get": {
+        "summary": "Get profit chart all users",
+        "operationId": "getAdminPositionsProfitchart",
+        "parameters": [
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "x-convert": {
+              "case": "lower"
+            },
+            "name": "address",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "boolean",
+            "name": "latest",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/admin/summary/{address}": {
+      "get": {
+        "summary": "Get multisig contract summary",
+        "operationId": "getAdminSummaryAddress",
+        "parameters": [
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "x-convert": {
+              "case": "lower"
+            },
+            "name": "address",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/admin/user/admin": {
+      "get": {
+        "summary": "Get list admin usernames",
+        "operationId": "getAdminUserAdmin",
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/app/config/{key}": {
+      "get": {
+        "summary": "Get configuration",
+        "operationId": "getAppConfigKey",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "main",
+              "addresses",
+              "trading-protocol",
+              "create-account-fee",
+              "fee"
+            ],
+            "name": "key",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "tags": [
+          "App"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/auth/admin/me": {
+      "get": {
+        "summary": "Get Admin Info",
+        "operationId": "getAuthAdminMe",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/collect/registered/item": {
+      "get": {
+        "summary": "Get registered item for auto collect",
+        "operationId": "getCollectRegisteredItem",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "id",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Auto Collect Reposition"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/collect/registered/list": {
+      "get": {
+        "summary": "Get registered list for auto collect",
+        "operationId": "getCollectRegisteredList",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Auto Collect Reposition"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/keyring/admin/profit-chart": {
+      "get": {
+        "summary": "Api description",
+        "operationId": "getKeyringAdminProfitchart",
+        "parameters": [
+          {
+            "type": "array",
+            "maxItems": 250,
+            "x-constraint": {
+              "single": true
+            },
+            "items": {
+              "type": "string",
+              "minLength": 40,
+              "maxLength": 42,
+              "pattern": "^0x[a-fA-F0-9]{40}$",
+              "x-format": {
+                "alphanum": true
+              },
+              "x-convert": {
+                "case": "lower"
+              }
+            },
+            "collectionFormat": "multi",
+            "x-alternatives": [
+              {
+                "type": "array",
+                "maxItems": 250,
+                "x-constraint": {
+                  "single": true
+                },
+                "items": {
+                  "type": "string",
+                  "minLength": 40,
+                  "maxLength": 42,
+                  "pattern": "^0x[a-fA-F0-9]{40}$",
+                  "x-format": {
+                    "alphanum": true
+                  },
+                  "x-convert": {
+                    "case": "lower"
+                  }
+                },
+                "collectionFormat": "multi",
+                "name": "addresses"
+              },
+              {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 42,
+                "pattern": "^0x[a-fA-F0-9]{40}$",
+                "x-format": {
+                  "alphanum": true
+                },
+                "x-convert": {
+                  "case": "lower"
+                }
+              }
+            ],
+            "name": "addresses",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "keyring Admin"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/keyring/profit-summary/{address}": {
+      "get": {
+        "summary": "Api description",
+        "operationId": "getKeyringProfitsummaryAddress",
+        "parameters": [
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "x-convert": {
+              "case": "lower"
+            },
+            "name": "address",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "tags": [
+          "keyring Admin"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/multisig-contract/exists/{contractAddress}": {
+      "get": {
+        "summary": "Check if multisig contract exists",
+        "operationId": "getMultisigcontractExistsContractaddress",
+        "parameters": [
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "name": "contractAddress",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Multisig Contract"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/pool/system/statistics": {
+      "get": {
+        "summary": "Get system pool statistics",
+        "operationId": "getPoolSystemStatistics",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 50,
+            "minimum": 1,
+            "maximum": 1000,
+            "name": "limit",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1,
+            "name": "page",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "poolId",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "number",
+            "name": "startTimestamp",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "number",
+            "name": "endTimestamp",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "Pool"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/reposition/mint/list": {
+      "get": {
+        "summary": "Get LPs information for reposition",
+        "operationId": "getRepositionMintList",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Comma-separated list of token IDs",
+            "name": "tokenIds",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Auto Collect Reposition"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/reposition/registered/item": {
+      "get": {
+        "summary": "Get registered item for auto reposition",
+        "operationId": "getRepositionRegisteredItem",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "id",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Auto Collect Reposition"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/reposition/registered/list": {
+      "get": {
+        "summary": "Get registered list for auto reposition",
+        "operationId": "getRepositionRegisteredList",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Auto Collect Reposition"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/token/top-coins/price-snapshot": {
+      "get": {
+        "summary": "Get top coins price snapshot",
+        "operationId": "getTokenTopcoinsPricesnapshot",
+        "tags": [
+          "Token"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/uniswap/positions/app-keyring": {
+      "get": {
+        "summary": "Get position detail for app keyring",
+        "operationId": "getUniswapPositionsAppkeyring",
+        "parameters": [
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "x-convert": {
+              "case": "lower"
+            },
+            "name": "owner",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Uniswap"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/uniswap/positions/lp-chart": {
+      "get": {
+        "summary": "Get position LP chart",
+        "operationId": "getUniswapPositionsLpchart",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "pattern": "^[0-9]+$",
+            "name": "tokenId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "default": "v4",
+            "enum": [
+              "v3",
+              "v4"
+            ],
+            "name": "protocol",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Uniswap"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/uniswap/positions/tick-detail": {
+      "get": {
+        "summary": "Get position tick detail",
+        "operationId": "getUniswapPositionsTickdetail",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "pattern": "^[0-9]+$",
+            "name": "tokenId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "default": "v4",
+            "enum": [
+              "v3",
+              "v4"
+            ],
+            "name": "protocol",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Uniswap"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/uniswap/positions-snapshot-histories/{owner}": {
+      "get": {
+        "summary": "Get all uniswap positions snapshot",
+        "operationId": "getUniswapPositionssnapshothistoriesOwner",
+        "parameters": [
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "x-convert": {
+              "case": "lower"
+            },
+            "name": "owner",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "pattern": "^[0-9]+$",
+            "name": "tokenId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "default": "v4",
+            "enum": [
+              "v3",
+              "v4"
+            ],
+            "name": "protocol",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "id",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "Uniswap"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/user/bot-address/{userAddress}": {
+      "get": {
+        "summary": "Get bot address by user address",
+        "operationId": "getUserBotaddressUseraddress",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "userAddress",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/user/positions/apr-chart": {
+      "get": {
+        "summary": "Get APR chart for positions",
+        "operationId": "getUserPositionsAprchart",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Comma-separated list of token IDs",
+            "name": "tokenIds",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/user/positions/profit-chart": {
+      "get": {
+        "summary": "Get profit chart by multisig address",
+        "operationId": "getUserPositionsProfitchart",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The multisig address contract address",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "name": "address",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/pool/system/statistics/summary": {
+      "get": {
+        "summary": "Get system pool statistics summary",
+        "operationId": "getPoolSystemStatisticsSummary",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "poolId",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "number",
+            "name": "startTimestamp",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "number",
+            "name": "endTimestamp",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "Pool"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/user/bot-address/contract/{multisigContract}": {
+      "get": {
+        "summary": "Get bot address by multisig contract",
+        "operationId": "getUserBotaddressContractMultisigcontract",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "multisigContract",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/firebase-notification": {
+      "post": {
+        "summary": "Api description",
+        "operationId": "postFirebasenotification",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model3"
+            }
+          }
+        ],
+        "tags": [
+          "Firebase Notification"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Api description",
+        "operationId": "deleteFirebasenotification",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model27"
+            }
+          }
+        ],
+        "tags": [
+          "Firebase Notification"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/pair": {
+      "post": {
+        "summary": "Create pair",
+        "operationId": "postPair",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model5"
+            }
+          }
+        ],
+        "tags": [
+          "Pair"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/keyring/register-address": {
+      "post": {
+        "summary": "Api description",
+        "operationId": "postKeyringRegisteraddress",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model10"
+            }
+          }
+        ],
+        "tags": [
+          "keyring Admin"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/multisig-contract/create": {
+      "post": {
+        "summary": "Create multisig contract",
+        "operationId": "postMultisigcontractCreate",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model11"
+            }
+          }
+        ],
+        "tags": [
+          "Multisig Contract"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/pair/mint-position": {
+      "post": {
+        "summary": "Mint position in pair",
+        "operationId": "postPairMintposition",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model13"
+            }
+          }
+        ],
+        "tags": [
+          "Pair"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/token/info": {
+      "post": {
+        "summary": "Get token price information",
+        "operationId": "postTokenInfo",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model15"
+            }
+          }
+        ],
+        "tags": [
+          "Token"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/upload/file": {
+      "post": {
+        "summary": "Upload file",
+        "operationId": "postUploadFile",
+        "parameters": [
+          {
+            "type": "file",
+            "description": "File",
+            "x-meta": {
+              "swaggerType": "file"
+            },
+            "in": "formData",
+            "name": "file",
+            "required": true
+          }
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "tags": [
+          "File"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/auth/admin/login": {
+      "post": {
+        "summary": "Admin Login",
+        "operationId": "postAuthAdminLogin",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model16"
+            }
+          }
+        ],
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/app/config": {
+      "put": {
+        "summary": "Update configuration",
+        "operationId": "putAppConfig",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model19"
+            }
+          }
+        ],
+        "tags": [
+          "App"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/featured-earning-user/{address}": {
+      "put": {
+        "summary": "Api description",
+        "operationId": "putFeaturedearninguserAddress",
+        "parameters": [
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "name": "address",
+            "in": "path",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model20"
+            }
+          }
+        ],
+        "tags": [
+          "Featured earning user"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/notification/{id}": {
+      "put": {
+        "summary": "Update notification",
+        "operationId": "putNotificationId",
+        "parameters": [
+          {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$",
+            "x-alternatives": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-fA-F]{24}$"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "_bsontype": {
+                    "type": "string",
+                    "enum": [
+                      "ObjectId"
+                    ]
+                  }
+                }
+              }
+            ],
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model21"
+            }
+          }
+        ],
+        "tags": [
+          "Notification"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete notification",
+        "operationId": "deleteNotificationId",
+        "parameters": [
+          {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$",
+            "x-alternatives": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-fA-F]{24}$"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "_bsontype": {
+                    "type": "string",
+                    "enum": [
+                      "ObjectId"
+                    ]
+                  }
+                }
+              }
+            ],
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Notification"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/admin/user/{address}": {
+      "put": {
+        "summary": "Update user",
+        "operationId": "putAdminUserAddress",
+        "parameters": [
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "x-convert": {
+              "case": "lower"
+            },
+            "name": "address",
+            "in": "path",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model22"
+            }
+          }
+        ],
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/keyring/update-user-name/{address}": {
+      "put": {
+        "summary": "Api description",
+        "operationId": "putKeyringUpdateusernameAddress",
+        "parameters": [
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "x-convert": {
+              "case": "lower"
+            },
+            "name": "address",
+            "in": "path",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model23"
+            }
+          }
+        ],
+        "tags": [
+          "keyring Admin"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/token/{chainId}/{address}": {
+      "put": {
+        "summary": "Update token",
+        "operationId": "putTokenChainidAddress",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "name": "address",
+            "in": "path",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model24"
+            }
+          }
+        ],
+        "tags": [
+          "Token"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/token-summary/{chainId}/{address}": {
+      "put": {
+        "summary": "Update a token summary",
+        "operationId": "putTokensummaryChainidAddress",
+        "parameters": [
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "name": "address",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model25"
+            }
+          }
+        ],
+        "tags": [
+          "Token Summary"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/pool/system/{chainId}/{poolId}": {
+      "put": {
+        "summary": "Update system pool",
+        "operationId": "putPoolSystemChainidPoolid",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "poolId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Model26"
+            }
+          }
+        ],
+        "tags": [
+          "Pool"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/blacklist-token/{id}": {
+      "delete": {
+        "summary": "Delete blacklist token",
+        "operationId": "deleteBlacklisttokenId",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "tags": [
+          "BlacklistToken"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/pair/{no}": {
+      "delete": {
+        "summary": "Delete pair",
+        "operationId": "deletePairNo",
+        "parameters": [
+          {
+            "type": "number",
+            "name": "no",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Pair"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/keyring/delete-user/{address}": {
+      "delete": {
+        "summary": "Api description",
+        "operationId": "deleteKeyringDeleteuserAddress",
+        "parameters": [
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "x-convert": {
+              "case": "lower"
+            },
+            "name": "address",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "tags": [
+          "keyring Admin"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Model1": {
+      "type": "object",
+      "properties": {
+        "chainId": {
+          "type": "string"
+        },
+        "tokenAddress": {
+          "type": "string",
+          "minLength": 40,
+          "maxLength": 42,
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "x-format": {
+            "alphanum": true
+          }
+        }
+      },
+      "required": [
+        "chainId",
+        "tokenAddress"
+      ]
+    },
+    "Model2": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string",
+          "minLength": 40,
+          "maxLength": 42,
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "x-format": {
+            "alphanum": true
+          }
+        },
+        "avatar": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "address"
+      ]
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "ja",
+        "en",
+        "cn"
+      ]
+    },
+    "Model3": {
+      "type": "object",
+      "properties": {
+        "oldToken": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string"
+        },
+        "language": {
+          "$ref": "#/definitions/language"
+        }
+      },
+      "required": [
+        "token",
+        "language"
+      ]
+    },
+    "Model4": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "object",
+          "default": {},
+          "properties": {
+            "string": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "required": [
+        "content"
+      ]
+    },
+    "chainId": {
+      "type": "string",
+      "enum": [
+        "1",
+        "130",
+        "4663",
+        "8453"
+      ]
+    },
+    "Model5": {
+      "type": "object",
+      "properties": {
+        "zeroForOne": {
+          "type": "boolean"
+        },
+        "chainId": {
+          "$ref": "#/definitions/chainId"
+        },
+        "poolId": {
+          "type": "string"
+        },
+        "tickLower": {
+          "type": "number"
+        },
+        "tickUpper": {
+          "type": "number"
+        },
+        "memo": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "zeroForOne",
+        "chainId",
+        "poolId",
+        "tickLower",
+        "tickUpper",
+        "memo"
+      ]
+    },
+    "Model6": {
+      "type": "object",
+      "properties": {
+        "chainId": {
+          "$ref": "#/definitions/chainId"
+        },
+        "address": {
+          "type": "string",
+          "minLength": 40,
+          "maxLength": 42,
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "x-format": {
+            "alphanum": true
+          }
+        },
+        "decimals": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "symbol": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "rwa": {
+          "type": "boolean"
+        },
+        "position": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "chainId",
+        "address",
+        "decimals",
+        "name",
+        "symbol",
+        "icon",
+        "rwa"
+      ]
+    },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "ja": {
+          "type": "string"
+        },
+        "en": {
+          "type": "string"
+        },
+        "cn": {
+          "type": "string"
+        }
+      }
+    },
+    "Model7": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string",
+          "minLength": 40,
+          "maxLength": 42,
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "x-format": {
+            "alphanum": true
+          }
+        },
+        "chainId": {
+          "$ref": "#/definitions/chainId"
+        },
+        "summary": {
+          "$ref": "#/definitions/summary"
+        }
+      },
+      "required": [
+        "address",
+        "chainId",
+        "summary"
+      ]
+    },
+    "Model8": {
+      "type": "object",
+      "properties": {
+        "userAddress": {
+          "type": "string",
+          "minLength": 40,
+          "maxLength": 42,
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "x-format": {
+            "alphanum": true
+          },
+          "x-convert": {
+            "case": "lower"
+          }
+        },
+        "username": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "userAddress"
+      ]
+    },
+    "Model9": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "signature": {
+          "type": "string",
+          "pattern": "^0x[0-9a-fA-F]+$"
+        },
+        "isMobile": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": [
+        "message",
+        "signature"
+      ]
+    },
+    "Model10": {
+      "type": "object",
+      "properties": {
+        "userAddress": {
+          "type": "string",
+          "minLength": 40,
+          "maxLength": 42,
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "x-format": {
+            "alphanum": true
+          },
+          "x-convert": {
+            "case": "lower"
+          }
+        },
+        "username": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "userAddress"
+      ]
+    },
+    "signers": {
+      "type": "array",
+      "minItems": 3,
+      "x-constraint": {},
+      "items": {
+        "type": "string",
+        "minLength": 40,
+        "maxLength": 42,
+        "pattern": "^0x[a-fA-F0-9]{40}$",
+        "x-format": {
+          "alphanum": true
+        }
+      }
+    },
+    "Model11": {
+      "type": "object",
+      "properties": {
+        "chainId": {
+          "$ref": "#/definitions/chainId"
+        },
+        "signers": {
+          "$ref": "#/definitions/signers"
+        },
+        "signerThreshold": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": {
+            "ref": {
+              "path": [
+                "signers",
+                "length"
+              ]
+            }
+          }
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "chainId",
+        "signers",
+        "signerThreshold",
+        "label"
+      ]
+    },
+    "extraData": {
+      "type": "object"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "withdraw-token",
+        "withdraw-nft"
+      ]
+    },
+    "Model12": {
+      "type": "object",
+      "properties": {
+        "chainId": {
+          "$ref": "#/definitions/chainId"
+        },
+        "contractAddress": {
+          "type": "string",
+          "minLength": 40,
+          "maxLength": 42,
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "x-format": {
+            "alphanum": true
+          }
+        },
+        "signData": {
+          "type": "string"
+        },
+        "extraData": {
+          "$ref": "#/definitions/extraData"
+        },
+        "nonce": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "deadline": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "signature": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/type"
+        }
+      },
+      "required": [
+        "chainId",
+        "contractAddress",
+        "nonce",
+        "deadline",
+        "signature",
+        "type"
+      ]
+    },
+    "Model13": {
+      "type": "object",
+      "properties": {
+        "no": {
+          "type": "number"
+        },
+        "tokenId": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        }
+      },
+      "required": [
+        "no",
+        "tokenId"
+      ]
+    },
+    "Model14": {
+      "type": "object",
+      "properties": {
+        "chainId": {
+          "$ref": "#/definitions/chainId"
+        },
+        "token0": {
+          "type": "string",
+          "minLength": 40,
+          "maxLength": 42,
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "x-format": {
+            "alphanum": true
+          }
+        },
+        "token1": {
+          "type": "string",
+          "minLength": 40,
+          "maxLength": 42,
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "x-format": {
+            "alphanum": true
+          }
+        },
+        "hooks": {
+          "type": "string",
+          "minLength": 40,
+          "maxLength": 42,
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "x-format": {
+            "alphanum": true
+          }
+        },
+        "hookName": {
+          "type": "string"
+        },
+        "memo": {
+          "type": "string"
+        },
+        "fee": {
+          "type": "number"
+        },
+        "tickSpacing": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "chainId",
+        "token0",
+        "token1",
+        "hooks",
+        "fee",
+        "tickSpacing"
+      ]
+    },
+    "addresses": {
+      "type": "array",
+      "maxItems": 100,
+      "x-constraint": {
+        "single": true
+      },
+      "items": {
+        "type": "string",
+        "minLength": 40,
+        "maxLength": 42,
+        "pattern": "^0x[a-fA-F0-9]{40}$",
+        "x-format": {
+          "alphanum": true
+        }
+      }
+    },
+    "Model15": {
+      "type": "object",
+      "properties": {
+        "chainId": {
+          "$ref": "#/definitions/chainId"
+        },
+        "addresses": {
+          "$ref": "#/definitions/addresses"
+        }
+      },
+      "required": [
+        "chainId"
+      ]
+    },
+    "Model16": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "username",
+        "password"
+      ]
+    },
+    "providers": {
+      "type": "object"
+    },
+    "Model17": {
+      "type": "object",
+      "properties": {
+        "providers": {
+          "$ref": "#/definitions/providers"
+        }
+      },
+      "required": [
+        "providers"
+      ]
+    },
+    "key": {
+      "type": "string",
+      "enum": [
+        "main",
+        "create-account-fee"
+      ]
+    },
+    "Model18": {
+      "type": "object"
+    },
+    "Model19": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "$ref": "#/definitions/key"
+        },
+        "values": {
+          "$ref": "#/definitions/Model18",
+          "x-alternatives": [
+            {
+              "$ref": "#/x-alt-definitions/values"
+            },
+            {
+              "$ref": "#/x-alt-definitions/Model1"
+            }
+          ]
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "required": [
+        "key",
+        "values",
+        "updatedAt"
+      ]
+    },
+    "Model20": {
+      "type": "object",
+      "properties": {
+        "avatar": {
+          "type": "string"
+        },
+        "deleted": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Model21": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "object",
+          "default": {},
+          "properties": {
+            "string": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "required": [
+        "content"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "blocked"
+      ]
+    },
+    "Model22": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/status"
+        }
+      }
+    },
+    "Model23": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "username"
+      ]
+    },
+    "Model24": {
+      "type": "object",
+      "properties": {
+        "decimals": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "symbol": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "rwa": {
+          "type": "boolean"
+        },
+        "position": {
+          "type": "number"
+        }
+      }
+    },
+    "Model25": {
+      "type": "object",
+      "properties": {
+        "summary": {
+          "$ref": "#/definitions/summary"
+        }
+      },
+      "required": [
+        "summary"
+      ]
+    },
+    "Model26": {
+      "type": "object",
+      "properties": {
+        "memo": {
+          "type": "string"
+        },
+        "hookName": {
+          "type": "string"
+        },
+        "isHidden": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Model27": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "token"
+      ]
+    }
+  },
+  "x-alt-definitions": {
+    "values": {
+      "type": "object"
+    },
+    "Model1": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
