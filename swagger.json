@@ -43,6 +43,7 @@
           },
           {
             "type": "string",
+            "maxLength": 42,
             "name": "tokenAddress",
             "in": "query",
             "required": false
@@ -92,6 +93,12 @@
         "parameters": [
           {
             "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
             "name": "contractAddress",
             "in": "query",
             "required": true
@@ -265,14 +272,14 @@
             "required": false
           },
           {
-            "type": "number",
+            "type": "integer",
             "default": 1,
             "minimum": 1,
             "name": "startRanking",
             "in": "query"
           },
           {
-            "type": "number",
+            "type": "integer",
             "default": 100,
             "minimum": 1,
             "name": "endRanking",
@@ -534,6 +541,7 @@
           },
           {
             "type": "string",
+            "maxLength": 255,
             "name": "key",
             "in": "query",
             "required": false
@@ -713,6 +721,7 @@
         "parameters": [
           {
             "type": "string",
+            "maxLength": 255,
             "name": "sortBy",
             "in": "query",
             "required": true
@@ -877,6 +886,7 @@
           },
           {
             "type": "string",
+            "maxLength": 255,
             "name": "key",
             "in": "query",
             "required": false
@@ -936,6 +946,7 @@
           },
           {
             "type": "string",
+            "maxLength": 255,
             "name": "key",
             "in": "query",
             "required": false
@@ -1022,7 +1033,7 @@
             "required": true
           },
           {
-            "type": "number",
+            "type": "integer",
             "name": "nonce",
             "in": "query",
             "required": false
@@ -2277,13 +2288,13 @@
             "required": false
           },
           {
-            "type": "number",
+            "type": "integer",
             "name": "startTimestamp",
             "in": "query",
             "required": false
           },
           {
-            "type": "number",
+            "type": "integer",
             "name": "endTimestamp",
             "in": "query",
             "required": false
@@ -2746,13 +2757,13 @@
             "required": false
           },
           {
-            "type": "number",
+            "type": "integer",
             "name": "startTimestamp",
             "in": "query",
             "required": false
           },
           {
-            "type": "number",
+            "type": "integer",
             "name": "endTimestamp",
             "in": "query",
             "required": false
@@ -3428,6 +3439,27 @@
         "parameters": [
           {
             "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$",
+            "x-alternatives": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-fA-F]{24}$"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "_bsontype": {
+                    "type": "string",
+                    "enum": [
+                      "ObjectId"
+                    ]
+                  }
+                }
+              }
+            ],
             "name": "id",
             "in": "path",
             "required": true
@@ -3452,7 +3484,7 @@
         "operationId": "deletePairNo",
         "parameters": [
           {
-            "type": "number",
+            "type": "integer",
             "name": "no",
             "in": "path",
             "required": true
@@ -3507,11 +3539,20 @@
     }
   },
   "definitions": {
+    "chainId": {
+      "type": "string",
+      "enum": [
+        "1",
+        "130",
+        "4663",
+        "8453"
+      ]
+    },
     "Model1": {
       "type": "object",
       "properties": {
         "chainId": {
-          "type": "string"
+          "$ref": "#/definitions/chainId"
         },
         "tokenAddress": {
           "type": "string",
@@ -3541,7 +3582,8 @@
           }
         },
         "avatar": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 255
         }
       },
       "required": [
@@ -3563,7 +3605,8 @@
           "type": "string"
         },
         "token": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 1024
         },
         "language": {
           "$ref": "#/definitions/language"
@@ -3591,15 +3634,6 @@
         "content"
       ]
     },
-    "chainId": {
-      "type": "string",
-      "enum": [
-        "1",
-        "130",
-        "4663",
-        "8453"
-      ]
-    },
     "Model5": {
       "type": "object",
       "properties": {
@@ -3613,10 +3647,10 @@
           "type": "string"
         },
         "tickLower": {
-          "type": "number"
+          "type": "integer"
         },
         "tickUpper": {
-          "type": "number"
+          "type": "integer"
         },
         "memo": {
           "type": "string"
@@ -3647,7 +3681,7 @@
           }
         },
         "decimals": {
-          "type": "number"
+          "type": "integer"
         },
         "name": {
           "type": "string"
@@ -3730,7 +3764,8 @@
           }
         },
         "username": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 255
         }
       },
       "required": [
@@ -3773,7 +3808,8 @@
           }
         },
         "username": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 255
         }
       },
       "required": [
@@ -3885,7 +3921,7 @@
       "type": "object",
       "properties": {
         "no": {
-          "type": "number"
+          "type": "integer"
         },
         "tokenId": {
           "type": "string",
@@ -3937,10 +3973,12 @@
           "type": "string"
         },
         "fee": {
-          "type": "number"
+          "type": "integer",
+          "minimum": 0
         },
         "tickSpacing": {
-          "type": "number"
+          "type": "integer",
+          "minimum": 0
         }
       },
       "required": [
@@ -3986,10 +4024,12 @@
       "type": "object",
       "properties": {
         "username": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 255
         },
         "password": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 255
         }
       },
       "required": [
@@ -4053,7 +4093,8 @@
       "type": "object",
       "properties": {
         "avatar": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 255
         },
         "deleted": {
           "type": "boolean"
@@ -4088,7 +4129,8 @@
       "type": "object",
       "properties": {
         "username": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 255
         },
         "status": {
           "$ref": "#/definitions/status"
@@ -4099,7 +4141,8 @@
       "type": "object",
       "properties": {
         "username": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 255
         }
       },
       "required": [
@@ -4110,7 +4153,7 @@
       "type": "object",
       "properties": {
         "decimals": {
-          "type": "number"
+          "type": "integer"
         },
         "name": {
           "type": "string"

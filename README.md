@@ -4,17 +4,39 @@ Test tự động từ file swagger của API. Chỉ cần Python 3.9+.
 
 ## Cài và chạy
 
+**macOS / Linux** (máy chỉ có `python3` và `pip3`, không có lệnh `pip` / `python`; nên dùng môi trường ảo):
+
 ```
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
+Sau khi `activate`, `pip` và `python` dùng được bình thường. Mỗi lần mở terminal mới cần chạy lại `source .venv/bin/activate`. Nếu không dùng venv: `python3 -m pip install -r requirements.txt`, và chạy `python3 run.py ...` thay cho `python run.py ...`.
+
+**Lần sau (đã cài xong)**: không cần cài lại, chỉ cần:
+
+```
+cd /Users/bacoor/Documents/coinpoolpro-kit
+source .venv/bin/activate
+python run.py check
+```
+Đầu dòng lệnh có `(.venv)` là đã bật venv. Không muốn activate thì chạy `.venv/bin/python run.py check`. Chỉ cài lại khi `requirements.txt` đổi. Thoát venv: `deactivate`. Cài hỏng thì `rm -rf .venv` rồi tạo lại.
+
+**Windows**:
+
+```
+py -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
+(Nếu `python` không chạy thì dùng `py run.py ...`.)
+
 Copy `.env.example` thành `.env`, bỏ dấu `#` ở **một** dòng đăng nhập (`AUTH_HEADER`, hoặc `ADMIN_USERNAME` + `ADMIN_PASSWORD`, hoặc `TEST_PRIVATE_KEY`). Rồi:
 
 ```
 python run.py check
 ```
 Lệnh này tải swagger mới, chạy test, in bảng ĐẠT/LỖI. Báo cáo chi tiết: `output/report.html`.
-
-(Windows nếu `python` không chạy thì dùng `py run.py check`.)
 
 ## Các lệnh
 
