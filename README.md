@@ -75,7 +75,22 @@ Tự sinh từ spec, nằm trong `tests/test_generic.py`:
 4. Endpoint ghi dữ liệu: gửi JSON hỏng không được trả 5xx
 5. Tham số enum: giá trị ngoài danh sách phải bị 4xx
 
-Thêm `tests/test_admin_access.py`: token user thường vào endpoint `/admin`, `/keyring` phải bị 401/403 (cần `USER_AUTH_HEADER` hoặc `TEST_PRIVATE_KEY` của ví không phải admin, không có thì tự bỏ qua).
+Thêm `tests/test_admin_access.py`: token user thường vào endpoint `/admin`, `/keyring` phải bị 401/403, cả GET lẫn POST/PUT/PATCH (gửi body hỏng nên không ghi được dữ liệu; DELETE không body chỉ chạy khi `ALLOW_DESTRUCTIVE=1`). Cần `USER_AUTH_HEADER` hoặc `TEST_PRIVATE_KEY` của ví không phải admin, không có thì tự bỏ qua. Đổi tiền tố admin bằng `tests.admin_prefixes`.
+
+Thêm `tests/test_security.py` (chạy riêng: `python run.py test -k security`, mất vài phút):
+
+1. JWT giả: `alg=none`, ký bằng secret yếu, hết hạn, scheme lạ, token 10KB; sửa payload/chữ ký của token thật (cần `AUTH_HEADER` còn hạn, hết hạn thì tự bỏ qua)
+2. Token đặt ở query string (`?token=`) không được chấp nhận
+3. Injection (SQL, NoSQL, XSS, path traversal, command, template) vào mọi tham số chuỗi của GET: không 5xx, không lộ lỗi DB/stack trace
+4. Prototype pollution và trùng tham số không gây 5xx
+5. `/auth/sign`, `/auth/admin/login`: payload tấn công, chữ ký sai, body 5MB, JSON lồng sâu, sai Content-Type, chống dò tài khoản (cần `ADMIN_USERNAME`)
+6. Rate limit đăng nhập: chỉ chạy khi `RUN_RATE_LIMIT=1` (gửi 40 lần đăng nhập sai bằng tài khoản không tồn tại)
+7. Header bảo mật (nosniff, HSTS, X-Frame-Options), không lộ phiên bản, cookie, CORS không phản chiếu Origin tuỳ ý, HTTP chuyển sang HTTPS
+8. PUT/PATCH/DELETE không khai báo trong spec, TRACE/CONNECT, header `X-HTTP-Method-Override`: không chạy khi chưa đăng nhập
+9. File nhạy cảm (`/.env`, `/.git/config`, `/actuator/env`...) không công khai
+10. Response GET không chứa trường bí mật (`password`, `privateKey`, `mnemonic`...) và không lộ stack trace
+
+Các endpoint dùng để thử token giả được chọn tự động: chỉ lấy GET thật sự trả 401/403 khi không có token (ưu tiên `/auth/me`, `/admin`, `/keyring`). Tự chọn bằng `tests.jwt_probe`; bỏ một test header bằng `tests.security_skip` (ví dụ `["header Strict-Transport-Security"]`).
 
 ## Khi có test fail
 
@@ -94,6 +109,9 @@ Thêm `tests/test_admin_access.py`: token user thường vào endpoint `/admin`,
 | `tests.skip` | endpoint bỏ qua trong test chung, ví dụ `["GET /health"]` |
 | `tests.samples` | giá trị mẫu theo tên tham số, ví dụ `{"poolId": "0xabc"}` |
 | `tests.auth_statuses` | mã coi là "từ chối" (mặc định `[401, 403]`) |
+| `tests.admin_prefixes` | tiền tố đường dẫn admin cho test phân quyền (mặc định `["/admin", "/keyring"]`) |
+| `tests.jwt_probe` | endpoint dùng thử JWT giả, ví dụ `["GET /auth/me"]` |
+| `tests.security_skip` | bỏ qua test header bảo mật theo id |
 | `tests.assume_protected` | `true` nếu spec không khai báo security nhưng thực tế cần đăng nhập |
 
 ## An toàn
@@ -114,7 +132,7 @@ run.sh                 chạy nhanh trên macOS/Linux (tự lo venv)
 run.py                 file điều khiển (mọi lệnh ở trên)
 config.json            cấu hình riêng của API này
 swagger.json           spec đã tải (nên commit để thấy API đổi gì)
-tests/                 test_generic.py, test_admin_access.py
+tests/                 test_generic.py, test_admin_access.py, test_security.py
 tools/gen_cases.py     bộ sinh test case
 .env.example           mẫu cấu hình đăng nhập
 ```

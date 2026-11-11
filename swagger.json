@@ -30,13 +30,19 @@
         "parameters": [
           {
             "type": "string",
-            "maxLength": 100,
+            "maxLength": 255,
             "name": "key",
             "in": "query",
             "required": false
           },
           {
             "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
             "name": "chainId",
             "in": "query",
             "required": false
@@ -254,7 +260,7 @@
           },
           {
             "type": "string",
-            "maxLength": 100,
+            "maxLength": 255,
             "name": "key",
             "in": "query",
             "required": false
@@ -869,6 +875,7 @@
           },
           {
             "type": "string",
+            "maxLength": 255,
             "name": "sortBy",
             "in": "query",
             "required": false
@@ -929,6 +936,7 @@
           },
           {
             "type": "string",
+            "maxLength": 255,
             "name": "sortBy",
             "in": "query",
             "required": false
@@ -1006,6 +1014,12 @@
         "parameters": [
           {
             "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
             "name": "contractAddress",
             "in": "query",
             "required": true
@@ -1117,6 +1131,7 @@
           },
           {
             "type": "string",
+            "maxLength": 255,
             "name": "sortBy",
             "in": "query",
             "required": false
@@ -1146,12 +1161,24 @@
           },
           {
             "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
             "name": "token0",
             "in": "query",
             "required": false
           },
           {
             "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
             "name": "token1",
             "in": "query",
             "required": false
@@ -1168,13 +1195,14 @@
           },
           {
             "type": "string",
+            "maxLength": 255,
             "name": "createdBy",
             "in": "query",
             "required": false
           },
           {
             "type": "string",
-            "maxLength": 100,
+            "maxLength": 255,
             "name": "key",
             "in": "query",
             "required": false
@@ -1234,6 +1262,7 @@
           },
           {
             "type": "string",
+            "maxLength": 255,
             "name": "sortBy",
             "in": "query",
             "required": false
@@ -1263,6 +1292,7 @@
           },
           {
             "type": "string",
+            "maxLength": 255,
             "name": "createdBy",
             "in": "query",
             "required": false
@@ -1285,7 +1315,7 @@
           },
           {
             "type": "string",
-            "maxLength": 100,
+            "maxLength": 255,
             "name": "key",
             "in": "query",
             "required": false
@@ -1340,12 +1370,24 @@
           },
           {
             "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
             "name": "tokenA",
             "in": "query",
             "required": true
           },
           {
             "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
             "name": "tokenB",
             "in": "query",
             "required": true
@@ -1389,6 +1431,7 @@
           },
           {
             "type": "string",
+            "maxLength": 66,
             "name": "poolId",
             "in": "query",
             "required": true
@@ -1443,6 +1486,7 @@
           },
           {
             "type": "string",
+            "maxLength": 66,
             "name": "poolId",
             "in": "query",
             "required": false
@@ -1540,6 +1584,8 @@
           },
           {
             "type": "string",
+            "maxLength": 100,
+            "pattern": "^[0-9]+$",
             "name": "id",
             "in": "query",
             "required": true
@@ -1577,6 +1623,8 @@
           },
           {
             "type": "string",
+            "maxLength": 100,
+            "pattern": "^[0-9]+$",
             "name": "id",
             "in": "query",
             "required": true
@@ -1614,6 +1662,7 @@
           },
           {
             "type": "string",
+            "maxLength": 255,
             "name": "key",
             "in": "query",
             "required": false
@@ -1656,6 +1705,7 @@
           },
           {
             "type": "string",
+            "maxLength": 255,
             "name": "key",
             "in": "query",
             "required": false
@@ -1674,6 +1724,12 @@
           },
           {
             "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
             "name": "address",
             "in": "query",
             "required": false
@@ -2056,6 +2112,8 @@
           },
           {
             "type": "string",
+            "maxLength": 100,
+            "pattern": "^[0-9]+$",
             "name": "id",
             "in": "query",
             "required": true
@@ -2283,6 +2341,7 @@
           },
           {
             "type": "string",
+            "maxLength": 66,
             "name": "poolId",
             "in": "query",
             "required": false
@@ -2370,6 +2429,8 @@
           },
           {
             "type": "string",
+            "maxLength": 100,
+            "pattern": "^[0-9]+$",
             "name": "id",
             "in": "query",
             "required": true
@@ -2425,6 +2486,66 @@
         "operationId": "getTokenTopcoinsPricesnapshot",
         "tags": [
           "Token"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/uniswap/nft/count": {
+      "get": {
+        "summary": "Get nft count by status",
+        "operationId": "getUniswapNftCount",
+        "parameters": [
+          {
+            "type": "string",
+            "enum": [
+              "1",
+              "130",
+              "4663",
+              "8453"
+            ],
+            "name": "chainId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
+            "name": "owner",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "array",
+            "x-constraint": {
+              "single": true
+            },
+            "items": {
+              "type": "string",
+              "enum": [
+                "v3",
+                "v4"
+              ]
+            },
+            "collectionFormat": "multi",
+            "name": "protocol",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "tags": [
+          "Uniswap"
         ],
         "responses": {
           "default": {
@@ -2620,6 +2741,8 @@
           },
           {
             "type": "string",
+            "maxLength": 100,
+            "pattern": "^[0-9]+$",
             "name": "id",
             "in": "query",
             "required": false
@@ -2645,6 +2768,12 @@
         "parameters": [
           {
             "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
             "name": "userAddress",
             "in": "path",
             "required": true
@@ -2752,6 +2881,7 @@
           },
           {
             "type": "string",
+            "maxLength": 66,
             "name": "poolId",
             "in": "query",
             "required": false
@@ -2789,6 +2919,12 @@
         "parameters": [
           {
             "type": "string",
+            "minLength": 40,
+            "maxLength": 42,
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "x-format": {
+              "alphanum": true
+            },
             "name": "multisigContract",
             "in": "path",
             "required": true
@@ -3407,6 +3543,7 @@
           },
           {
             "type": "string",
+            "maxLength": 66,
             "name": "poolId",
             "in": "path",
             "required": true
@@ -3602,11 +3739,12 @@
       "type": "object",
       "properties": {
         "oldToken": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 2048
         },
         "token": {
           "type": "string",
-          "maxLength": 1024
+          "maxLength": 2048
         },
         "language": {
           "$ref": "#/definitions/language"
@@ -3653,7 +3791,8 @@
           "type": "integer"
         },
         "memo": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 1024
         }
       },
       "required": [
@@ -3681,16 +3820,20 @@
           }
         },
         "decimals": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 0
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 1024
         },
         "symbol": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 255
         },
         "icon": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 1024
         },
         "rwa": {
           "type": "boolean"
@@ -3852,7 +3995,8 @@
           }
         },
         "label": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 1024
         }
       },
       "required": [
@@ -3861,6 +4005,19 @@
         "signerThreshold",
         "label"
       ]
+    },
+    "MultisigSignData": {
+      "type": "object",
+      "description": "WithdrawToken: { \"tokens\": [], \"amounts\": [], \"recipientAddress\": \"\" } | WithdrawNFT: { \"nfts\": [], \"tokenIds\": [[]], \"recipientAddress\": \"\" }",
+      "example": {
+        "tokens": [
+          "0x0000000000000000000000000000000000000001"
+        ],
+        "amounts": [
+          "1000000000000000000"
+        ],
+        "recipientAddress": "0x0000000000000000000000000000000000000002"
+      }
     },
     "extraData": {
       "type": "object"
@@ -3888,7 +4045,7 @@
           }
         },
         "signData": {
-          "type": "string"
+          "$ref": "#/definitions/MultisigSignData"
         },
         "extraData": {
           "$ref": "#/definitions/extraData"
@@ -3902,7 +4059,8 @@
           "minimum": 0
         },
         "signature": {
-          "type": "string"
+          "type": "string",
+          "pattern": "^0x[0-9a-fA-F]+$"
         },
         "type": {
           "$ref": "#/definitions/type"
@@ -3967,10 +4125,12 @@
           }
         },
         "hookName": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 255
         },
         "memo": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 1024
         },
         "fee": {
           "type": "integer",
@@ -4153,16 +4313,20 @@
       "type": "object",
       "properties": {
         "decimals": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 0
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 1024
         },
         "symbol": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 255
         },
         "icon": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 1024
         },
         "rwa": {
           "type": "boolean"
@@ -4187,10 +4351,12 @@
       "type": "object",
       "properties": {
         "memo": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 1024
         },
         "hookName": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 255
         },
         "isHidden": {
           "type": "boolean"
@@ -4201,7 +4367,8 @@
       "type": "object",
       "properties": {
         "token": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 2048
         }
       },
       "required": [
